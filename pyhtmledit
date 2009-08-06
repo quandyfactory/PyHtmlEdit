@@ -2,11 +2,14 @@
 
 import sys
 
-# hack to get the python interpreter to use wx2.8 instead of wx2.6
-try:
-    sys.path.remove('/usr/lib/python2.6/dist-packages/wx-2.6-gtk2-unicode')
-except:
-    pass
+# old kludge to get the python interpreter to use wx2.8 instead of wx2.6
+#try:
+#    sys.path.remove('/usr/lib/python2.6/dist-packages/wx-2.6-gtk2-unicode')
+#except:
+#    pass
+
+import wxversion
+wxversion.select('2.8')
 
 import wx
 import re

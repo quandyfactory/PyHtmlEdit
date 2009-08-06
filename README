@@ -1,5 +1,100 @@
-PyHtmlEdit is a simple Python text editor optimized for the kinds of HTML formatting that I commonly do.
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>PyHtmlEdit README</title>
+<meta name="author" content="Ryan McGreal">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
 
-* homepage: http://quandyfactory.com/projects/pyhtmledit
-* git repository: http://github.com/quandyfactory/PyHTMLEdit
+<h1>PyHtmlEdit README</h1>
+
+<p class="initial">PyHtmlEdit is a simple Python text editor optimized for the kinds of HTML formatting that I commonly do.</p>
+
+<h2>Author</h2>
+
+<ul>
+<li>Author: Ryan McGreal</li>
+<li>Email: <a href="mailto:ryan@quandyfactory.com">ryan@quandyfactory.com</a></li>
+<li>Homepage: <a href="http://quandyfactory.com/projects/pyhtmledit">http://quandyfactory.com/projects/pyhtmledit</a></li>
+<li>Repository: <a href="http://github.com/quandyfactory/PyHtmlEdit">http://github.com/quandyfactory/PyHtmlEdit</a></li>
+</ul>
+
+<p>PyHtmlEdit was assembled from stuff I found online and some functions I've written.</p>
+
+
+<h2>Licence</h2>
+
+<p>Released under the GNU General Public Licence, Version 2:</p>
+
+<p><a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html" target="_blank">http://www.gnu.org/licenses/old-licenses/gpl-2.0.html</a></p>
+
+
+<h2>This Version</h2>
+
+<ul>
+<li>Version: 0.2</li>
+<li>Release Date: 2009-08-06</li>
+</ul>
+
+
+<h2>Reversion History</h2>
+
+<ul>
+<li>Version: 0.2</li>
+<li>Release Date: 2009-08-06</li>
+<li>Replaced wx version kludge with wxversion.select()
+</ul>
+
+<ul>
+<li>Version: 0.1</li>
+<li>Release Date: 2009-08-06</li>
+</ul>
+
+
+<h2>Requirements</h2>
+
+<ul>
+<li>Python 2.5 or newer</li>
+<li>wxPython 2.8</li>
+</ul>
+
+
+<h2>Notes</h2>
+
+
+<h3>wxPython version</h3>
+
+<p>This program requires wxPython 2.8, and specifically makes use of the TextCtrl StringSelection property, which doesn't exist in wxPython 2.6.</p>
+
+<p>My home system (Ubuntu 9.04 Jaunty) comes with wxPython 2.6 pre-installed, and apparently some basic system code depends on this older version, so I had to install 2.8 separately:</p>
+
+<p><a href="http://wiki.wxpython.org/InstallingOnUbuntuOrDebian" target="_blank">http://wiki.wxpython.org/InstallingOnUbuntuOrDebian</a></p>
+
+<p>Unfortunately, when importing wx, Python grabs the older version by default, not the newer one. The solution is to import wxversion first, and select version 2.8, as per this example:</p>
+
+<p><a href="http://www.wxpython.org/docs/api/wxversion-module.html" target="_blank">http://www.wxpython.org/docs/api/wxversion-module.html</a></p>
+
+<p>Fixed from version 0.1.</p>
+
+<h3>2. Missing Functionality</h3>
+
+<h4>Search/Replace</h4>
+
+<p>The most obvious missing function is any kind of search and search/replace. That's one of the first things I'd like to add.</p>
+
+<h4>HTML Preview</h4>
+
+<p>Another handy feature would be an HTML Preview so you can see what your code will look like.</p>
+
+<h4>Toggle Line Wrap</h4>
+
+<p>I'd like to be able to toggle between line wrapping and horizontal scrolling, but apparently you can't change the style wx.TE_MULTILINE on a TextCtrl after creating it. Instead, you would have to subclass the control and flip between two controls, one of which is set to wrap and the other set to scroll.</p>
+
+<p><a href="http://aspn.activestate.com/ASPN/Mail/Message/wxpython-users/3698130" target="_blank">http://aspn.activestate.com/ASPN/Mail/Message/wxpython-users/3698130</a></p>
+
+<p>So this is also on my list of things to do.</p>
+
+</body>
+</html>
 
