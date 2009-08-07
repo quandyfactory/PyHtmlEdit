@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+__version__ = 0.2
+__author__ = "Ryan McGreal ryan@quandyfactory.com"
+__copyright__ = "(C) 2009 Ryan McGreal. GNU GPL 2."
+
 import sys
 
 # old kludge to get the python interpreter to use wx2.8 instead of wx2.6
