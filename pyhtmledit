@@ -15,6 +15,16 @@ import wx
 import re
 import os
 
+# import html2text
+path = os.path.dirname(sys.argv[0])
+abspath = os.path.abspath(path)
+sys.path.append(abspath)
+import html2text
+h2txt = html2text.html2text
+
+
+
+
 # the following hash table and KillGremlins function are courtesy:
 # http://effbot.org/zone/unicode-gremlins.htm
 
@@ -95,6 +105,12 @@ def AttList(attributes):
     Takes a dictionary of HTML attributes and returns a list of attribute names and values to go inside an HTML tag.
     """
     return ' ' + ' '.join(['%s="%s"' % (k, v) for k, v in attributes.items()])
+
+def Html2TextIt(stuff):
+    """
+    Uses Aaron Swartz's clever html2text to convert HTML into Markdown-formatted plain text
+    """
+    return h2txt(stuff)
 
 def TagIt(tag, text, block = False, attributes = {}):
     """
@@ -197,6 +213,7 @@ ID_ABOUTMENU = 37
 ID_TOGGLEWRAP = 38
 ID_PINITIAL = 39
 ID_SWITCHMODE = 40
+ID_HTML2TEXT = 41
 
 # The basic code for this came from a free example I found somewhere online.
 # Unfortunately I've forgotten where I got it, so I can't attribute it properly.
@@ -292,6 +309,7 @@ class MainWindow(wx.Frame):
         tools_menu = wx.Menu()
         tools_menu.Append(ID_WORDCOUNT, "&Word Count", "Return a count of words")
         tools_menu.Append(ID_STRIPHTML, "&Strip HTML", "Remove all HTML elements and leave the text")
+        tools_menu.Append(ID_HTML2TEXT, "&Html2Text", "Convert HTML into Markdown-formatted plain text")
         
         about_menu = wx.Menu()
         about_menu.Append(ID_ABOUT, "&About PyHtmlEdit"," Information about this program")
@@ -344,6 +362,7 @@ class MainWindow(wx.Frame):
         wx.EVT_MENU(self, ID_STRIPHTML, self.OnStripHtml)
         wx.EVT_MENU(self, ID_TOGGLEWRAP, self.OnToggleWrap)
         wx.EVT_MENU(self, ID_SWITCHMODE, self.OnSwitchMode)
+        wx.EVT_MENU(self, ID_HTML2TEXT, self.OnHtml2Text)
 
         self.Show(1)
 
@@ -464,12 +483,13 @@ class MainWindow(wx.Frame):
         self.control.WriteText(self.control.StringSelection.lower())
     def OnPcase(self,e):
         self.control.WriteText(' '.join([w.capitalize() for w in self.control.StringSelection.split(' ')]))
+    def OnHtml2Text(self,e):
+        self.control.WriteText(Html2TextIt(self.control.StringSelection))
     def OnClean(self,e):
         dirtytext = self.control.StringSelection
-        
         dirtytext = CleanIt(dirtytext)
-
         self.control.WriteText(dirtytext)
+
     def OnWordCount(self,e):
         # first, try to get the selected text
         selection = self.control.StringSelection
