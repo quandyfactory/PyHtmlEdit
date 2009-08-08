@@ -33,12 +33,22 @@
 <h2>This Version</h2>
 
 <ul>
-<li>Version: 0.2</li>
+<li>Version: 0.3</li>
 <li>Release Date: 2009-08-06</li>
 </ul>
 
 
 <h2>Revision History</h2>
+
+<ul>
+<li>Version: 0.3</li>
+<li>Release Date: 2009-08-07</li>
+<li>Changes:
+<ul>
+<li>Added Tools function to convert markdown syntax into HTML. It cleverly checks for python-markdown, and if it doesn't find it, checks for markdown2. If it can't find either, it simply disables the function.</li>
+</ul>
+</li>
+</ul>
 
 <ul>
 <li>Version: 0.2</li>
@@ -63,12 +73,31 @@
 <h2>Requirements</h2>
 
 <ul>
-<li>Python 2.5 or newer</li>
+<li>Python 2.5 or newer (not Python 3)</li>
 <li>wxPython 2.8</li>
 </ul>
 
 
 <h2>Notes</h2>
+
+
+<h3>Markdown</h3>
+
+<p>This software does not come bundled with a markdown parser. It checks your system to see if you already have python-markdown installed.</p>
+
+<p><a href="http://www.freewisdom.org/projects/python-markdown/'" target="_blank">http://www.freewisdom.org/projects/python-markdown/</a></p>
+
+<p>If not, it checks to see if you have python-markdown2 installed.</p>
+
+<p><a href="http://code.google.com/p/python-markdown2/" target="_blank">http://code.google.com/p/python-markdown2/</a></p>
+
+<p>Note: both modules are available through easy_install.</p>
+
+<p>If you have one of these modules installed, it provides the ability to convert markdown syntax to HTML in the Tools menu. If you don't have either module installed, it simply doesn't offer that function.</p>
+
+<p>Added in version 0.3.</p>
+
+<p>Some time in the future, I might add support for PottyMouth as well.</p>
 
 
 <h3>wxPython version</h3>
@@ -85,15 +114,19 @@
 
 <p>Fixed from version 0.1.</p>
 
-<h3>2. Missing Functionality</h3>
+
+<h3>Missing Functionality</h3>
+
 
 <h4>Search/Replace</h4>
 
 <p>The most obvious missing function is any kind of search and search/replace. That's one of the first things I'd like to add.</p>
 
+
 <h4>HTML Preview</h4>
 
 <p>Another handy feature would be an HTML Preview so you can see what your code will look like.</p>
+
 
 <h4>Toggle Line Wrap</h4>
 
@@ -102,6 +135,7 @@
 <p><a href="http://aspn.activestate.com/ASPN/Mail/Message/wxpython-users/3698130" target="_blank">http://aspn.activestate.com/ASPN/Mail/Message/wxpython-users/3698130</a></p>
 
 <p>So this is also on my list of things to do.</p>
+
 
 <h4>Add a Tutorial</h4>
 

@@ -24,11 +24,21 @@ Released under the GNU General Public Licence, Version 2:
 
 ## This Version
 
-  * Version: 0.2
+  * Version: 0.3
 
   * Release Date: 2009-08-06
 
 ## Revision History
+
+  * Version: 0.3
+
+  * Release Date: 2009-08-07
+
+  * Changes:
+
+    * Added Tools function to convert markdown syntax into HTML. It cleverly
+checks for python-markdown, and if it doesn't find it, checks for markdown2.
+If it can't find either, it simply disables the function.
 
   * Version: 0.2
 
@@ -38,7 +48,8 @@ Released under the GNU General Public Licence, Version 2:
 
     * Replaced wx version kludge with wxversion.select()
 
-    * Added html2text function from: [http://www.aaronsw.com/2002/html2text/][5]
+    * Added html2text function from:
+[http://www.aaronsw.com/2002/html2text/][5]
 
     * Added an icon (webtools.ico)
 
@@ -52,11 +63,32 @@ Released under the GNU General Public Licence, Version 2:
 
 ## Requirements
 
-  * Python 2.5 or newer
+  * Python 2.5 or newer (not Python 3)
 
   * wxPython 2.8
 
 ## Notes
+
+### Markdown
+
+This software does not come bundled with a markdown parser. It checks your
+system to see if you already have python-markdown installed.
+
+[http://www.freewisdom.org/projects/python-markdown/][6]
+
+If not, it checks to see if you have python-markdown2 installed.
+
+[http://code.google.com/p/python-markdown2/][7]
+
+Note: both modules are available through easy_install.
+
+If you have one of these modules installed, it provides the ability to convert
+markdown syntax to HTML in the Tools menu. If you don't have either module
+installed, it simply doesn't offer that function.
+
+Added in version 0.3.
+
+Some time in the future, I might add support for PottyMouth as well.
 
 ### wxPython version
 
@@ -67,17 +99,17 @@ My home system (Ubuntu 9.04 Jaunty) comes with wxPython 2.6 pre-installed, and
 apparently some basic system code depends on this older version, so I had to
 install 2.8 separately:
 
-[http://wiki.wxpython.org/InstallingOnUbuntuOrDebian][6]
+[http://wiki.wxpython.org/InstallingOnUbuntuOrDebian][8]
 
 Unfortunately, when importing wx, Python grabs the older version by default,
 not the newer one. The solution is to import wxversion first, and select
 version 2.8, as per this example:
 
-[http://www.wxpython.org/docs/api/wxversion-module.html][7]
+[http://www.wxpython.org/docs/api/wxversion-module.html][9]
 
 Fixed from version 0.1.
 
-### 2. Missing Functionality
+### Missing Functionality
 
 #### Search/Replace
 
@@ -96,7 +128,7 @@ but apparently you can't change the style wx.TE_MULTILINE on a TextCtrl after
 creating it. Instead, you would have to subclass the control and flip between
 two controls, one of which is set to wrap and the other set to scroll.
 
-[http://aspn.activestate.com/ASPN/Mail/Message/wxpython-users/3698130][8]
+[http://aspn.activestate.com/ASPN/Mail/Message/wxpython-users/3698130][10]
 
 So this is also on my list of things to do.
 
@@ -116,9 +148,13 @@ are not used to it already.
 
    [5]: http://www.aaronsw.com/2002/html2text/
 
-   [6]: http://wiki.wxpython.org/InstallingOnUbuntuOrDebian
+   [6]: http://www.freewisdom.org/projects/python-markdown/'
 
-   [7]: http://www.wxpython.org/docs/api/wxversion-module.html
+   [7]: http://code.google.com/p/python-markdown2/
 
-   [8]: http://aspn.activestate.com/ASPN/Mail/Message/wxpython-users/3698130
+   [8]: http://wiki.wxpython.org/InstallingOnUbuntuOrDebian
+
+   [9]: http://www.wxpython.org/docs/api/wxversion-module.html
+
+   [10]: http://aspn.activestate.com/ASPN/Mail/Message/wxpython-users/3698130
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-__version__ = 0.2
+__version__ = 0.3
 __author__ = "Ryan McGreal ryan@quandyfactory.com"
 __copyright__ = "(C) 2009 Ryan McGreal. GNU GPL 2."
 
@@ -27,6 +27,23 @@ import html2text
 h2txt = html2text.html2text
 
 
+# allow users to convert markdown to HTML if they have markdown or markdown2 installed
+
+# initialize markdown marker
+markdown = False
+
+# try importing markdown
+try:
+	from markdown import markdown
+except:
+	markdown = False
+
+# try importing markdown2
+if markdown == False:
+	try:
+		from markdown2 import markdown
+	except:
+		markdown = False
 
 
 # the following hash table and KillGremlins function are courtesy:
@@ -87,6 +104,15 @@ CleanChars = {
     u'\u2013': u'-',  # EN DASH
     u'\u2014': u'-',  # EM DASH
 }
+
+def MarkdownIt(text):
+    """
+    Converts markdown syntax to HTML if it's installed
+    """
+    if markdown != False:
+        return markdown(text)
+    else:
+        return text
 
 def CleanIt(text):
     """
@@ -218,6 +244,7 @@ ID_TOGGLEWRAP = 38
 ID_PINITIAL = 39
 ID_SWITCHMODE = 40
 ID_HTML2TEXT = 41
+ID_MARKDOWN = 42
 
 # The basic code for this came from a free example I found somewhere online.
 # Unfortunately I've forgotten where I got it, so I can't attribute it properly.
@@ -314,6 +341,8 @@ class MainWindow(wx.Frame):
         tools_menu.Append(ID_WORDCOUNT, "&Word Count", "Return a count of words")
         tools_menu.Append(ID_STRIPHTML, "&Strip HTML", "Remove all HTML elements and leave the text")
         tools_menu.Append(ID_HTML2TEXT, "&Html2Text", "Convert HTML into Markdown-formatted plain text")
+        if markdown != False:
+            tools_menu.Append(ID_MARKDOWN, "&Markdown", "Convert Markdown-formatted plain text into HTML")
         
         about_menu = wx.Menu()
         about_menu.Append(ID_ABOUT, "&About PyHtmlEdit"," Information about this program")
@@ -367,6 +396,7 @@ class MainWindow(wx.Frame):
         wx.EVT_MENU(self, ID_TOGGLEWRAP, self.OnToggleWrap)
         wx.EVT_MENU(self, ID_SWITCHMODE, self.OnSwitchMode)
         wx.EVT_MENU(self, ID_HTML2TEXT, self.OnHtml2Text)
+        wx.EVT_MENU(self, ID_MARKDOWN, self.OnMarkdown)
 
         self.Show(1)
 
@@ -489,6 +519,8 @@ class MainWindow(wx.Frame):
         self.control.WriteText(' '.join([w.capitalize() for w in self.control.StringSelection.split(' ')]))
     def OnHtml2Text(self,e):
         self.control.WriteText(Html2TextIt(self.control.StringSelection))
+    def OnMarkdown(self,e):
+        self.control.WriteText(MarkdownIt(self.control.StringSelection))
     def OnClean(self,e):
         dirtytext = self.control.StringSelection
         dirtytext = CleanIt(dirtytext)
