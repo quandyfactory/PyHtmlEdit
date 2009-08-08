@@ -1,7 +1,6 @@
 # PyHtmlEdit README
 
-PyHtmlEdit is a simple Python text editor optimized for the kinds of HTML
-formatting that I commonly do.
+PyHtmlEdit is a simple Python text editor optimized for the kinds of HTML formatting that I commonly do.
 
 ## Author
 
@@ -13,8 +12,7 @@ formatting that I commonly do.
 
   * Repository: [http://github.com/quandyfactory/PyHtmlEdit][3]
 
-PyHtmlEdit was assembled from stuff I found online and some functions I've
-written.
+PyHtmlEdit was assembled from stuff I found online and some functions I've written.
 
 ## Licence
 
@@ -26,7 +24,7 @@ Released under the GNU General Public Licence, Version 2:
 
   * Version: 0.3
 
-  * Release Date: 2009-08-06
+  * Release Date: 2009-08-07
 
 ## Revision History
 
@@ -36,9 +34,7 @@ Released under the GNU General Public Licence, Version 2:
 
   * Changes:
 
-    * Added Tools function to convert markdown syntax into HTML. It cleverly
-checks for python-markdown, and if it doesn't find it, checks for markdown2.
-If it can't find either, it simply disables the function.
+    * Added Tools function to convert markdown syntax into HTML.  See note, below, for details.
 
   * Version: 0.2
 
@@ -48,8 +44,7 @@ If it can't find either, it simply disables the function.
 
     * Replaced wx version kludge with wxversion.select()
 
-    * Added html2text function from:
-[http://www.aaronsw.com/2002/html2text/][5]
+    * Added html2text function from: [http://www.aaronsw.com/2002/html2text/][5]
 
     * Added an icon (webtools.ico)
 
@@ -71,8 +66,7 @@ If it can't find either, it simply disables the function.
 
 ### Markdown
 
-This software does not come bundled with a markdown parser. It checks your
-system to see if you already have python-markdown installed.
+This software does not come bundled with a markdown parser. It checks your system to see if you already have python-markdown installed.
 
 [http://www.freewisdom.org/projects/python-markdown/][6]
 
@@ -82,9 +76,7 @@ If not, it checks to see if you have python-markdown2 installed.
 
 Note: both modules are available through easy_install.
 
-If you have one of these modules installed, it provides the ability to convert
-markdown syntax to HTML in the Tools menu. If you don't have either module
-installed, it simply doesn't offer that function.
+If you have one of these modules installed, it provides the ability to convert markdown syntax to HTML in the Tools menu. If you don't have either module installed, it simply doesn't offer that function.
 
 Added in version 0.3.
 
@@ -92,18 +84,13 @@ Some time in the future, I might add support for PottyMouth as well.
 
 ### wxPython version
 
-This program requires wxPython 2.8, and specifically makes use of the TextCtrl
-StringSelection property, which doesn't exist in wxPython 2.6.
+This program requires wxPython 2.8, and specifically makes use of the TextCtrl StringSelection property, which doesn't exist in wxPython 2.6.
 
-My home system (Ubuntu 9.04 Jaunty) comes with wxPython 2.6 pre-installed, and
-apparently some basic system code depends on this older version, so I had to
-install 2.8 separately:
+My home system (Ubuntu 9.04 Jaunty) comes with wxPython 2.6 pre-installed, and apparently some basic system code depends on this older version, so I had to install 2.8 separately:
 
 [http://wiki.wxpython.org/InstallingOnUbuntuOrDebian][8]
 
-Unfortunately, when importing wx, Python grabs the older version by default,
-not the newer one. The solution is to import wxversion first, and select
-version 2.8, as per this example:
+Unfortunately, when importing wx, Python grabs the older version by default, not the newer one. The solution is to import wxversion first, and select version 2.8, as per this example:
 
 [http://www.wxpython.org/docs/api/wxversion-module.html][9]
 
@@ -113,20 +100,15 @@ Fixed from version 0.1.
 
 #### Search/Replace
 
-The most obvious missing function is any kind of search and search/replace.
-That's one of the first things I'd like to add.
+The most obvious missing function is any kind of search and search/replace. That's one of the first things I'd like to add.
 
 #### HTML Preview
 
-Another handy feature would be an HTML Preview so you can see what your code
-will look like.
+Another handy feature would be an HTML Preview so you can see what your code will look like.
 
 #### Toggle Line Wrap
 
-I'd like to be able to toggle between line wrapping and horizontal scrolling,
-but apparently you can't change the style wx.TE_MULTILINE on a TextCtrl after
-creating it. Instead, you would have to subclass the control and flip between
-two controls, one of which is set to wrap and the other set to scroll.
+I'd like to be able to toggle between line wrapping and horizontal scrolling, but apparently you can't change the style wx.TE_MULTILINE on a TextCtrl after creating it. Instead, you would have to subclass the control and flip between two controls, one of which is set to wrap and the other set to scroll.
 
 [http://aspn.activestate.com/ASPN/Mail/Message/wxpython-users/3698130][10]
 
@@ -134,9 +116,9 @@ So this is also on my list of things to do.
 
 #### Add a Tutorial
 
-The tool is not complicated to use, and all the functionality is in the menus
-across the stop. Still, it may be valuable to add a tutorial for new users who
-are not used to it already.
+The tool is not complicated to use, and all the functionality is in the menus across the stop. Still, it may be valuable to add a tutorial for new users who are not used to it already.
+
+## References
 
    [1]: mailto:ryan@quandyfactory.com
 

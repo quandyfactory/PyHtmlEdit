@@ -2,6 +2,7 @@
 
 __version__ = 0.3
 __author__ = "Ryan McGreal ryan@quandyfactory.com"
+__homepage__ = "http://quandyfactory.com/projects/pyhtmledit/"
 __copyright__ = "(C) 2009 Ryan McGreal. GNU GPL 2."
 
 import sys
