@@ -8,7 +8,7 @@ PyHtmlEdit is a simple Python text editor optimized for the kinds of HTML format
 
   * Email: [ryan@quandyfactory.com][1]
 
-  * Homepage: [http://quandyfactory.com/projects/pyhtmledit][2]
+  * Homepage: [http://quandyfactory.com/projects/2/pyhtmledit][2]
 
   * Repository: [http://github.com/quandyfactory/PyHtmlEdit][3]
 
@@ -22,21 +22,33 @@ Released under the GNU General Public Licence, Version 2:
 
 ## This Version
 
-  * Version: 0.3
+  * Version: 0.4
 
-  * Release Date: 2009-08-07
+  * Release Date: 2009-09-22
 
 ## Revision History
 
-  * Version: 0.3
+### Version: 0.4
+
+  * Release Date: 2009-09-22
+
+  * Changes:
+
+    * Fixed bug in table creation code that was adding </tble> as closing tag.
+    * Added a Replace function that takes a selection of text and replaces the value of `find` with the value of `replace`.
+    * Added an SQL function that converts special SQL punctuation to entity codes. 
+    * Replaced CamelCase on function and method names to lowercase_with_underscores. 
+    * Changed Markdown function to stop closing </p> tag from going to a new line on Windows, and also adding a blank line after each paragraph.
+
+### Version: 0.3
 
   * Release Date: 2009-08-07
 
   * Changes:
 
-    * Added Tools function to convert markdown syntax into HTML.  See note, below, for details.
+    * Added Tools function to convert markdown syntax into HTML. See note, below, for details.
 
-  * Version: 0.2
+### Version: 0.2
 
   * Release Date: 2009-08-06
 
@@ -52,7 +64,7 @@ Released under the GNU General Public Licence, Version 2:
 
     * Included both a README.html and a README.txt
 
-  * Version: 0.1
+### Version: 0.1
 
   * Release Date: 2009-08-06
 
@@ -122,7 +134,7 @@ The tool is not complicated to use, and all the functionality is in the menus ac
 
    [1]: mailto:ryan@quandyfactory.com
 
-   [2]: http://quandyfactory.com/projects/pyhtmledit
+   [2]: http://quandyfactory.com/projects/2/pyhtmledit
 
    [3]: http://github.com/quandyfactory/PyHtmlEdit
 
