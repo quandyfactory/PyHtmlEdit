@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-__version__ = 0.4
+__version__ = 0.41
 __releasedate__ = '2009-09-22'
 __author__ = 'Ryan McGreal <ryan@quandyfactory.com>'
 __homepage__ = 'http://quandyfactory.com/projects/2/pyhtmledit/'
