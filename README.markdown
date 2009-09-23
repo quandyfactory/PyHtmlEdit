@@ -110,10 +110,6 @@ Fixed from version 0.1.
 
 ### Missing Functionality
 
-#### Search/Replace
-
-The most obvious missing function is any kind of search and search/replace. That's one of the first things I'd like to add.
-
 #### HTML Preview
 
 Another handy feature would be an HTML Preview so you can see what your code will look like.
