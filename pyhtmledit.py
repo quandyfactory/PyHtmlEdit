@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 __version__ = 0.4
+__releasedate__ = '2009-09-22'
 __author__ = 'Ryan McGreal <ryan@quandyfactory.com>'
 __homepage__ = 'http://quandyfactory.com/projects/2/pyhtmledit/'
 __copyright__ = '(C) 2009 by Ryan McGreal. Licenced under GNU GPL 2.0\nhttp://www.gnu.org/licenses/old-licenses/gpl-2.0.html'
@@ -424,7 +425,7 @@ class MainWindow(wx.Frame):
 
         self.Show(1)
 
-        self.aboutme = wx.MessageDialog( self, "PyHtmlEdit is a simple HTML editor written in Python using the wxPython GUI library (v2.8).\n\nCreated by %s\n\nVersion %s\n\n%s\n\nHomepage: %s" % (__author__, __version__, __copyright__, __homepage__), "About PyHtmlEdit", wx.OK)
+        self.aboutme = wx.MessageDialog( self, "PyHtmlEdit is a simple HTML editor written in Python using the wxPython GUI library (v2.8).\n\nCreated by %s\n\nVersion %s, Released on %s\n\n%s\n\nHomepage: %s" % (__author__, __version__, __releasedate__, __copyright__, __homepage__), "About PyHtmlEdit", wx.OK)
         self.doiexit = wx.MessageDialog( self, "Are you sure you want to exit? \n", "Confirm Exit", wx.YES_NO)
 
         self.dirname = ''

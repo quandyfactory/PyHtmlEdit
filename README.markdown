@@ -19,11 +19,19 @@ Released under the GNU General Public Licence, Version 2:
 
 ## This Version
 
-  * Version: 0.4
+  * Version: 0.41
 
   * Release Date: 2009-09-22
 
 ## Revision History
+
+### Version: 0.41
+
+  * Release Date: 2009-09-22
+
+  * Changes:
+
+    * Added release date to About page.
 
 ### Version: 0.4
 
@@ -36,6 +44,7 @@ Released under the GNU General Public Licence, Version 2:
     * Added an SQL function that converts special SQL punctuation to entity codes. 
     * Replaced CamelCase on function and method names to lowercase_with_underscores. 
     * Changed Markdown function to stop closing </p> tag from going to a new line on Windows, and also adding a blank line after each paragraph.
+
 
 ### Version: 0.3
 
