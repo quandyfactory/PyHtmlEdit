@@ -5,11 +5,8 @@ PyHtmlEdit is a simple Python text editor optimized for the kinds of HTML format
 ## Author
 
   * Author: Ryan McGreal
-
   * Email: [ryan@quandyfactory.com][1]
-
   * Homepage: [http://quandyfactory.com/projects/2/pyhtmledit][2]
-
   * Repository: [http://github.com/quandyfactory/PyHtmlEdit][3]
 
 PyHtmlEdit was assembled from stuff I found online and some functions I've written.
@@ -55,13 +52,9 @@ Released under the GNU General Public Licence, Version 2:
   * Changes:
 
     * Replaced wx version kludge with wxversion.select()
-
     * Added html2text function from: [http://www.aaronsw.com/2002/html2text/][5]
-
     * Added an icon (webtools.ico)
-
     * Added a note in README to add a tutorial in the future
-
     * Included both a README.html and a README.txt
 
 ### Version: 0.1
@@ -71,8 +64,8 @@ Released under the GNU General Public Licence, Version 2:
 ## Requirements
 
   * Python 2.5 or newer (not Python 3)
-
   * wxPython 2.8
+  * python-markdown or python-markdown2
 
 ## Notes
 
