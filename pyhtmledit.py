@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 
-__version__ = 0.41
-__releasedate__ = '2009-09-22'
+__version__ = 0.42
+__releasedate__ = '2009-09-24'
 __author__ = 'Ryan McGreal <ryan@quandyfactory.com>'
 __homepage__ = 'http://quandyfactory.com/projects/2/pyhtmledit/'
+__repository__ = 'http://github.com/quandyfactory/PyHtmlEdit'
 __copyright__ = '(C) 2009 by Ryan McGreal. Licenced under GNU GPL 2.0\nhttp://www.gnu.org/licenses/old-licenses/gpl-2.0.html'
 
 import sys
@@ -18,12 +19,21 @@ import os
 # import html2text
 path = os.path.dirname(sys.argv[0])
 abspath = os.path.abspath(path)
-sys.path.append(abspath)
+print abspath
+sys.path.extend([abspath, abspath + '/pygithubapi'])
+
 import html2text
 h2txt = html2text.html2text
 
+#import pygithubapi
+try:
+    import pygithubapi as github
+except:
+    github = False
+
 # allow users to convert markdown to HTML if they have markdown or markdown2 installed
-markdown = False # initialize markdown marker
+# initialize markdown marker
+markdown = False 
 
 # try importing markdown
 try:
@@ -105,6 +115,16 @@ CleanChars = {
     u'\u2013': u'-',  # EN DASH
     u'\u2014': u'-',  # EM DASH
 }
+
+def check_last_update(url="http://github.com/api/v2/yaml/commits/list/quandyfactory/PyHtmlEdit/master"):
+    """
+    Compares the last commit date in the GitHub repository using pygithubapi to __releasedate__.
+    """
+    last_update = github.get_last_commit(url)
+    if last_update > __releasedate__:
+        return last_update
+    else:
+        return None
 
 def replace_it(find, replace, selection):
     """
@@ -265,6 +285,7 @@ ID_HTML2TEXT = 41
 ID_MARKDOWN = 42
 ID_SQL = 43
 ID_REPLACE = 44
+ID_UPDATED = 45
 
 # The basic code for this came from a free example I found somewhere online.
 # Unfortunately I've forgotten where I got it, so I can't attribute it properly.
@@ -368,7 +389,9 @@ class MainWindow(wx.Frame):
             tools_menu.Append(ID_MARKDOWN, "&Markdown", "Convert Markdown-formatted plain text into HTML")
         
         about_menu = wx.Menu()
-        about_menu.Append(ID_ABOUT, "&About PyHtmlEdit"," Information about this program")
+        about_menu.Append(ID_ABOUT, "&About PyHtmlEdit","Information about this program")
+        if github is not False:
+            about_menu.Append(ID_UPDATED, "&Check Version","Checks this program's GitHub repository to see if there is a newer version.")
         
         # Creating the menubar.
         menuBar = wx.MenuBar()
@@ -422,37 +445,42 @@ class MainWindow(wx.Frame):
         wx.EVT_MENU(self, ID_MARKDOWN, self.on_markdown)
         wx.EVT_MENU(self, ID_SQL, self.on_sql)
         wx.EVT_MENU(self, ID_REPLACE, self.on_replace)
+        wx.EVT_MENU(self, ID_UPDATED, self.on_updated)
 
         self.Show(1)
 
-        self.aboutme = wx.MessageDialog( self, "PyHtmlEdit is a simple HTML editor written in Python using the wxPython GUI library (v2.8).\n\nCreated by %s\n\nVersion %s, Released on %s\n\n%s\n\nHomepage: %s" % (__author__, __version__, __releasedate__, __copyright__, __homepage__), "About PyHtmlEdit", wx.OK)
-        self.doiexit = wx.MessageDialog( self, "Are you sure you want to exit? \n", "Confirm Exit", wx.YES_NO)
-
+        self.aboutme = wx.MessageDialog(self, "PyHtmlEdit is a simple HTML editor written in Python using the wxPython GUI library (v2.8).\n\nCreated by %s\n\nVersion %s, Released on %s\n\n%s\n\nHomepage: %s" % (__author__, __version__, __releasedate__, __copyright__, __homepage__), "About PyHtmlEdit", wx.OK)
+        self.doiexit = wx.MessageDialog(self, "Are you sure you want to exit? \n", "Confirm Exit", wx.YES_NO)
+        
         self.dirname = ''
 
-    def on_replace(self,e):
-        dlg_find = wx.TextEntryDialog(self, 'Text to find', 'Find')
-        dlg_find.SetValue("")
-        if dlg_find.ShowModal() == wx.ID_OK:
-            find = dlg_find.GetValue()
-            dlg_find.Destroy()
-            dlg_replace = wx.TextEntryDialog(self, 'Text to replace', 'Replace')
-            dlg_replace.SetValue("")
-            if dlg_replace.ShowModal() == wx.ID_OK:
-                replace = dlg_replace.GetValue()
-                dlg_replace.Destroy()
-        if find != '':
-            self.control.WriteText(replace_it(find, replace, self.control.StringSelection))
+    def on_updated(self,e):
+        last_updated = check_last_update()
+        if last_updated is None:
+            self.uptodate = wx.MessageDialog(self, "Your version of PyHtmlEdit is up to date. \n", "Version is Current", wx.OK)
+            self.uptodate.ShowModal()
+        else:
+            self.uptodate = wx.MessageDialog(self, "A newer version of PyHtmlEdit was published on %s.\n\nYou can download it from here:\n\n%s" % (last_updated, __repository__), "Newer Version Available", wx.OK)
+            self.uptodate.ShowModal()            
 
     def on_about(self,e):
+        """
+        Show About page as a dialog.
+        """
         self.aboutme.ShowModal()
 
     def on_exit(self,e):
+        """
+        Exit the program
+        """
         igot = self.doiexit.ShowModal()
         if igot == wx.ID_YES:
             self.Close(True)
 
     def on_open(self,e):
+        """
+        Open a file.
+        """
         dlg = wx.FileDialog(self, "Choose a file", self.dirname, "", "*.*", wx.OPEN)
         if dlg.ShowModal() == wx.ID_OK:
             self.filename=dlg.GetFilename()
@@ -464,6 +492,9 @@ class MainWindow(wx.Frame):
         dlg.Destroy()
 
     def on_save(self,e):
+        """
+        Save the file.
+        """
         dlg = wx.FileDialog(self, "Choose a file", self.dirname, "", "*.*", \
                 wx.SAVE | wx.OVERWRITE_PROMPT)
         if dlg.ShowModal() == wx.ID_OK:
@@ -476,6 +507,9 @@ class MainWindow(wx.Frame):
         dlg.Destroy()
         
     def on_strong(self,e):
+        """
+        Wrap <strong> element around selection
+        """
         self.control.WriteText(tag_it('strong', self.control.StringSelection))
 
     def on_em(self,e):
@@ -594,8 +628,8 @@ class MainWindow(wx.Frame):
 
     def on_clean(self,e):
         dirtytext = self.control.StringSelection
-        dirtytext = clean_it(dirtytext)
-        self.control.WriteText(dirtytext)
+        cleantext = clean_it(dirtytext)
+        self.control.WriteText(cleantext)
 
     def on_word_count(self,e):
         # first, try to get the selected text
@@ -629,6 +663,24 @@ class MainWindow(wx.Frame):
 
     def on_switch_mode(self,e):
         pass
+    
+    def on_replace(self,e):
+        """
+        Asks for a find string and a replace string, and replaces the former with the latter
+        """
+        dlg_find = wx.TextEntryDialog(self, 'Text to find', 'Find')
+        dlg_find.SetValue("")
+        if dlg_find.ShowModal() == wx.ID_OK:
+            find = dlg_find.GetValue()
+            dlg_find.Destroy()
+            dlg_replace = wx.TextEntryDialog(self, 'Text to replace', 'Replace')
+            dlg_replace.SetValue("")
+            if dlg_replace.ShowModal() == wx.ID_OK:
+                replace = dlg_replace.GetValue()
+                dlg_replace.Destroy()
+        if find != '':
+            self.control.WriteText(replace_it(find, replace, self.control.StringSelection))
+
 
 # Set up a window based app, and create a main window in it
 app = wx.PySimpleApp()

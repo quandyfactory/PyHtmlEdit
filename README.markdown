@@ -19,20 +19,30 @@ Released under the GNU General Public Licence, Version 2:
 
 ## This Version
 
-  * Version: 0.41
+  * Version: 0.42
 
-  * Release Date: 2009-09-22
+  * Release Date: 2009-09-24
 
 ## Revision History
 
+### Version: 0.42
+
+  * Release Date: 2009-09-24
+
+  * Changes:
+
+    * added check_last_update() function, which uses [pygithubapi](http://quandyfactory.com/projects/25/pygithubapi) and is available as "Check Version" from About menu. It compares __version__ with the latest commit date in the GitHub API for the PyHtmlEdit repository.
+    * Added __repository__ variable to top to link to public repository
+    
 ### Version: 0.41
 
   * Release Date: 2009-09-22
 
   * Changes:
 
+    * Modified Replace function to replace over entire document if no selection
     * Added release date to About page.
-
+    
 ### Version: 0.4
 
   * Release Date: 2009-09-22
