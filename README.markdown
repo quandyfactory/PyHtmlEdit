@@ -13,18 +13,27 @@ PyHtmlEdit was assembled from stuff I found online and some functions I've writt
 
 ## Licence
 
-Released under the GNU General Public Licence, Version 2:
-
-[http://www.gnu.org/licenses/old-licenses/gpl-2.0.html][4]
+Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/licenses/old-licenses/gpl-2.0.html][4]
 
 ## This Version
 
-  * Version: 0.42
+  * Version: 0.43
 
-  * Release Date: 2009-09-24
+  * Release Date: 2009-09-25
 
 ## Revision History
 
+### Version: 0.43
+
+  * Release Date: 2009-09-25
+
+  * Changes:
+
+    * Added proxy support for `check_last_update()`.
+    * PyGithubApi.py must be at least version 0.11 to work with this version of PyHtmlEdit.
+    * Added `set_config(config)` to save configuration values in a pickled dictionary. Saves in a file called `pyhtmledit_config` in the same folder as `pyhtmledit.py`.
+    * Added `get_config()` to get configuration values from a pickled dictionary
+    
 ### Version: 0.42
 
   * Release Date: 2009-09-24

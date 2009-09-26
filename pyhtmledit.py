@@ -1,20 +1,19 @@
 #!/usr/bin/env python
 
-__version__ = 0.42
-__releasedate__ = '2009-09-24'
+__version__ = 0.43
+__releasedate__ = '2009-09-25'
 __author__ = 'Ryan McGreal <ryan@quandyfactory.com>'
 __homepage__ = 'http://quandyfactory.com/projects/2/pyhtmledit/'
 __repository__ = 'http://github.com/quandyfactory/PyHtmlEdit'
 __copyright__ = '(C) 2009 by Ryan McGreal. Licenced under GNU GPL 2.0\nhttp://www.gnu.org/licenses/old-licenses/gpl-2.0.html'
 
-import sys
-
 import wxversion
 wxversion.select('2.8')
-
+import sys
 import wx
 import re
 import os
+import pickle
 
 # import html2text
 path = os.path.dirname(sys.argv[0])
@@ -24,6 +23,8 @@ sys.path.extend([abspath, abspath + '/pygithubapi'])
 
 import html2text
 h2txt = html2text.html2text
+
+config_filepath = abspath + '/pyhtmledit_config'
 
 #import pygithubapi
 try:
@@ -91,6 +92,36 @@ SQLReplace = {
     u"]": u"&#93;",
 }
 
+def get_config():
+    """
+    Gets application config data.
+    """
+    try:
+        # see if there is a config file
+        fread = file(config_filepath, 'r')
+    except:
+        # no config file, so create an empty one
+        fwrite = file(config_filepath, 'w')
+        config = {}
+        pickle.dump(config, fwrite)
+        fwrite.close()
+        fread = file(config_filepath, 'r')
+    # get config hash table
+    config = pickle.load(fread)
+    return config
+    
+def set_config(config):
+    """
+    Saves appplication config data.
+    """
+    # check if config is a dictionary
+    if type(config).__name__ == 'dict':
+        fwrite = file(config_filepath, 'w')
+        pickle.dump(config, fwrite)
+    else:
+        raise TypeError, (type(b).__name__, 'Error: config must be a dictionary')
+    
+
 def kill_gremlins(text):
     """
     Map cp1252 gremlins to real unicode characters
@@ -116,15 +147,19 @@ CleanChars = {
     u'\u2014': u'-',  # EM DASH
 }
 
-def check_last_update(url="http://github.com/api/v2/yaml/commits/list/quandyfactory/PyHtmlEdit/master"):
+def check_last_update(url='', proxies = {}):
     """
     Compares the last commit date in the GitHub repository using pygithubapi to __releasedate__.
     """
-    last_update = github.get_last_commit(url)
+    try:
+        last_update = github.get_last_commit(url, proxies=proxies)
+    except:
+        return 'no connection'
+    
     if last_update > __releasedate__:
         return last_update
     else:
-        return None
+        return 'current'
 
 def replace_it(find, replace, selection):
     """
@@ -455,9 +490,48 @@ class MainWindow(wx.Frame):
         self.dirname = ''
 
     def on_updated(self,e):
-        last_updated = check_last_update()
-        if last_updated is None:
-            self.uptodate = wx.MessageDialog(self, "Your version of PyHtmlEdit is up to date. \n", "Version is Current", wx.OK)
+        """
+        Checks the github repository to see if a newer version is available.
+        """
+        url = 'http://github.com/api/v2/yaml/commits/list/quandyfactory/PyHtmlEdit/master'
+        
+        config = get_config()
+        
+        try:
+            proxy = config['proxy']
+        except:
+            proxy = ''
+            
+        if proxy != '':
+            proxies = {'http': proxy }
+            last_updated = check_last_update(url, proxies=proxies)
+        else:
+            last_updated = check_last_update(url)
+            
+        if last_updated == 'no connection':
+            dlg_proxy = wx.TextEntryDialog(self, 
+                'This program cannot connect to the internet.\n\n' +
+                'If you know the http proxy server and port, you can enter it here to see if that works.', 
+                'No Connection to Internet',  
+                defaultValue=proxy
+                )
+                
+            dlg_proxy.SetValue("")
+            
+            if dlg_proxy.ShowModal() == wx.ID_OK:
+                proxy = dlg_proxy.GetValue()
+                if proxy[:7] != 'http://': 
+                    proxy = 'http://' + proxy
+                proxies = { 'http': proxy }
+                last_updated = check_last_update(url, proxies=proxies)
+                config['proxy'] = proxy
+                set_config(config)
+
+        if last_updated == 'no connection':
+            self.uptodate = wx.MessageDialog(self, "Sorry, but the proxy connection did not work.\n\nHey, it was worth a try.", "No Connection to Internet", wx.OK)
+            self.uptodate.ShowModal()
+        elif last_updated == 'current':
+            self.uptodate = wx.MessageDialog(self, "Your version of PyHtmlEdit is up to date.\n", "Version is Current", wx.OK)
             self.uptodate.ShowModal()
         else:
             self.uptodate = wx.MessageDialog(self, "A newer version of PyHtmlEdit was published on %s.\n\nYou can download it from here:\n\n%s" % (last_updated, __repository__), "Newer Version Available", wx.OK)
