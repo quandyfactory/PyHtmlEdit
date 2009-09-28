@@ -17,11 +17,19 @@ Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/li
 
 ## This Version
 
-  * Version: 0.43
+  * Version: 0.44
 
-  * Release Date: 2009-09-25
+  * Release Date: 2009-09-28
 
 ## Revision History
+
+### Version: 0.44
+
+  * Release Date: 2009-09-28
+
+  * Changes:
+
+    * Updated check_last_update() to reflect change in pygithubapi (send over user, repo instead of URL).
 
 ### Version: 0.43
 
@@ -91,9 +99,10 @@ Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/li
 
 ## Requirements
 
-  * Python 2.5 or newer (not Python 3)
-  * wxPython 2.8
-  * python-markdown or python-markdown2
+  * Python 2.5 or newer (not Python 3) [http://www.python.org/](http://www.python.org/)
+  * wxPython 2.8 [http://www.wxpython.org/](http://www.wxpython.org/)
+  * python-markdown [http://www.freewisdom.org/projects/python-markdown/](http://www.freewisdom.org/projects/python-markdown/) or python-markdown2 [http://code.google.com/p/python-markdown2/](http://code.google.com/p/python-markdown2/)
+  * pyyaml [http://pyyaml.org/](http://pyyaml.org/)
 
 ## Notes
 
