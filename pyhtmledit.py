@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-__version__ = 0.43
-__releasedate__ = '2009-09-25'
+__version__ = 0.44
+__releasedate__ = '2009-09-28'
 __author__ = 'Ryan McGreal <ryan@quandyfactory.com>'
 __homepage__ = 'http://quandyfactory.com/projects/2/pyhtmledit/'
 __repository__ = 'http://github.com/quandyfactory/PyHtmlEdit'
@@ -147,12 +147,12 @@ CleanChars = {
     u'\u2014': u'-',  # EM DASH
 }
 
-def check_last_update(url='', proxies = {}):
+def check_last_update(user='', repo='', proxies = {}):
     """
     Compares the last commit date in the GitHub repository using pygithubapi to __releasedate__.
     """
     try:
-        last_update = github.get_last_commit(url, proxies=proxies)
+        last_update = github.get_last_commit(user=user, repo=repo, proxies=proxies)
     except:
         return 'no connection'
     
@@ -493,8 +493,8 @@ class MainWindow(wx.Frame):
         """
         Checks the github repository to see if a newer version is available.
         """
-        url = 'http://github.com/api/v2/yaml/commits/list/quandyfactory/PyHtmlEdit/master'
-        
+        github_user = 'quandyfactory'
+        github_repo = 'PyHtmlEdit'
         config = get_config()
         
         try:
@@ -504,9 +504,9 @@ class MainWindow(wx.Frame):
             
         if proxy != '':
             proxies = {'http': proxy }
-            last_updated = check_last_update(url, proxies=proxies)
+            last_updated = check_last_update(user=github_user, repo=github_repo, proxies=proxies)
         else:
-            last_updated = check_last_update(url)
+            last_updated = check_last_update(user=github_user, repo=github_repo)
             
         if last_updated == 'no connection':
             dlg_proxy = wx.TextEntryDialog(self, 
@@ -523,7 +523,7 @@ class MainWindow(wx.Frame):
                 if proxy[:7] != 'http://': 
                     proxy = 'http://' + proxy
                 proxies = { 'http': proxy }
-                last_updated = check_last_update(url, proxies=proxies)
+                last_updated = check_last_update(user=github_user, repo=github_repo, proxies=proxies)
                 config['proxy'] = proxy
                 set_config(config)
 
