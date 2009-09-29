@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-__version__ = 0.44
-__releasedate__ = '2009-09-28'
+__version__ = 0.5
+__releasedate__ = '2009-09-29'
 __author__ = 'Ryan McGreal <ryan@quandyfactory.com>'
 __homepage__ = 'http://quandyfactory.com/projects/2/pyhtmledit/'
 __repository__ = 'http://github.com/quandyfactory/PyHtmlEdit'
@@ -82,6 +82,67 @@ cp1252 = {
     u"\x9F": u"\u0178", # LATIN CAPITAL LETTER Y WITH DIAERESIS
 }
 
+spelling_dict = {
+    '50\'s': '\'50s',
+    '60\'s': '\'60s',
+    '70\'s': '\'70s',
+    '80\'s': '\'80s',
+    '90\'s': '\'90s',
+    '??': '?',
+    '  ': ' ',
+    'acceptible': 'acceptable',
+    'Acceptible': 'Acceptable',
+    'accidently': 'accidentally',
+    'Accidently': 'Accidentally',
+    'agression': 'aggression',
+    'Agression': 'Aggression',
+    'arguement': 'argument',
+    'Arguement': 'Argument',
+    'balence': 'balance',
+    'Balence': 'Balance',
+    'baloon': 'balloon',
+    'Baloon': 'Balloon',
+    'buisness': 'business',
+    'Buisness': 'Business',
+    'bycicle': 'bicycle',
+    'Bycicle': 'Bicycle',
+    'cemetary': 'cemetery',
+    'Cemetary': 'Cemetery',
+    'cieling': 'ceiling',
+    'Cieling': 'Ceiling',
+    'conceed': 'concede',
+    'Conceed': 'Concede',
+    'concensus': 'consensus',
+    'Concensus': 'Consensus',
+    'Councilor': 'Councillor',
+    'councilor': 'Councillor',
+    'councillor': 'Councillor',    
+    'definate': 'definite',
+    'Definate': 'Definite',
+    'embarass': 'embarrass',
+    'Embarass': 'Embarrass',
+    'harrass': 'harass',
+    'Harrass': 'Harass',
+    'In order to': 'To',
+    'in order to': 'to',    
+    'independant': 'independent',
+    'Independant': 'Independent',
+    'neighborhood': 'neighbourhood',
+    'Neighborhood': 'Neighbourhood',
+    'reccomend': 'recommend',
+    'Reccomend': 'Recommend',
+    'reccommend': 'recomment',
+    'Reccomment': 'Recomment',
+    'seperate': 'separate',
+    'Seperate': 'Separate',
+    'skillful': 'skilful',
+    'Skillful': 'Skilful',
+    'truely': 'truly',
+    'Truely': 'Truly',
+    'wierd': 'weird',
+    'Wierd': 'Weird',
+}
+
 # hash of SQL punctuation and matching entity codes
 SQLReplace = {
     u"'": u"&#39;",
@@ -146,6 +207,15 @@ CleanChars = {
     u'\u2013': u'-',  # EN DASH
     u'\u2014': u'-',  # EM DASH
 }
+
+def fix_common_misspellings(text):
+    """
+    Automatically replaces commonly misspelled words with their correct spellings. Case sensitive.
+    """
+    for k, v in spelling_dict.items(): 
+        text = text.replace(k, v)
+    return text
+    
 
 def check_last_update(user='', repo='', proxies = {}):
     """
@@ -321,6 +391,7 @@ ID_MARKDOWN = 42
 ID_SQL = 43
 ID_REPLACE = 44
 ID_UPDATED = 45
+ID_MISSPELLINGS = 46
 
 # The basic code for this came from a free example I found somewhere online.
 # Unfortunately I've forgotten where I got it, so I can't attribute it properly.
@@ -415,6 +486,7 @@ class MainWindow(wx.Frame):
         format_menu.AppendSeparator()
         format_menu.Append(ID_CLEAN, "&Clean", "Clean up MS Word characters")
         format_menu.Append(ID_SQL, "&SaferSQL", "Replace SQL punctuation with entity codes")
+        format_menu.Append(ID_MISSPELLINGS, 'Common &Misspellings', 'Replace commonly misspelled words with the correct spelling')
 
         tools_menu = wx.Menu()
         tools_menu.Append(ID_WORDCOUNT, "&Word Count", "Return a count of words")
@@ -481,6 +553,7 @@ class MainWindow(wx.Frame):
         wx.EVT_MENU(self, ID_SQL, self.on_sql)
         wx.EVT_MENU(self, ID_REPLACE, self.on_replace)
         wx.EVT_MENU(self, ID_UPDATED, self.on_updated)
+        wx.EVT_MENU(self, ID_MISSPELLINGS, self.on_misspelling)
 
         self.Show(1)
 
@@ -537,6 +610,8 @@ class MainWindow(wx.Frame):
             self.uptodate = wx.MessageDialog(self, "A newer version of PyHtmlEdit was published on %s.\n\nYou can download it from here:\n\n%s" % (last_updated, __repository__), "Newer Version Available", wx.OK)
             self.uptodate.ShowModal()            
 
+            
+    
     def on_about(self,e):
         """
         Show About page as a dialog.
@@ -580,6 +655,13 @@ class MainWindow(wx.Frame):
             filehandle.close()
         dlg.Destroy()
         
+    def on_misspelling(self,e):
+        """
+        Replace common misspellings with correct spelling.
+        """
+        self.control.WriteText(fix_common_misspellings(self.control.StringSelection))
+    
+    
     def on_strong(self,e):
         """
         Wrap <strong> element around selection

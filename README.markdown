@@ -17,11 +17,19 @@ Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/li
 
 ## This Version
 
-  * Version: 0.44
+  * Version: 0.5
 
-  * Release Date: 2009-09-28
+  * Release Date: 2009-09-29
 
 ## Revision History
+
+### Version: 0.5
+
+  * Release Date: 2009-09-29
+
+  * Changes:
+
+    * Added fix_common_misspellings(), which automatically replaces commonly misspelled words with their correct spellings. Case sensitive.
 
 ### Version: 0.44
 
@@ -72,7 +80,6 @@ Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/li
     * Replaced CamelCase on function and method names to lowercase_with_underscores. 
     * Changed Markdown function to stop closing </p> tag from going to a new line on Windows, and also adding a blank line after each paragraph.
 
-
 ### Version: 0.3
 
   * Release Date: 2009-08-07
@@ -106,6 +113,20 @@ Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/li
 
 ## Notes
 
+### wxPython version
+
+This program requires wxPython 2.8, and specifically makes use of the TextCtrl StringSelection property, which doesn't exist in wxPython 2.6.
+
+My home system (Ubuntu 9.04 Jaunty) comes with wxPython 2.6 pre-installed, and apparently some basic system code depends on this older version, so I had to install 2.8 separately:
+
+[http://wiki.wxpython.org/InstallingOnUbuntuOrDebian][8]
+
+Unfortunately, when importing wx, Python grabs the older version by default, not the newer one. The solution is to import wxversion first, and select version 2.8, as per this example:
+
+[http://www.wxpython.org/docs/api/wxversion-module.html][9]
+
+Fixed from version 0.1.
+
 ### Markdown
 
 This software does not come bundled with a markdown parser. It checks your system to see if you already have python-markdown installed.
@@ -124,25 +145,11 @@ Added in version 0.3.
 
 Some time in the future, I might add support for PottyMouth as well.
 
-### wxPython version
-
-This program requires wxPython 2.8, and specifically makes use of the TextCtrl StringSelection property, which doesn't exist in wxPython 2.6.
-
-My home system (Ubuntu 9.04 Jaunty) comes with wxPython 2.6 pre-installed, and apparently some basic system code depends on this older version, so I had to install 2.8 separately:
-
-[http://wiki.wxpython.org/InstallingOnUbuntuOrDebian][8]
-
-Unfortunately, when importing wx, Python grabs the older version by default, not the newer one. The solution is to import wxversion first, and select version 2.8, as per this example:
-
-[http://www.wxpython.org/docs/api/wxversion-module.html][9]
-
-Fixed from version 0.1.
-
 ### Missing Functionality
 
 #### HTML Preview
 
-Another handy feature would be an HTML Preview so you can see what your code will look like.
+A handy feature would be an HTML Preview so you can see what your code will look like.
 
 #### Toggle Line Wrap
 
@@ -152,11 +159,15 @@ I'd like to be able to toggle between line wrapping and horizontal scrolling, bu
 
 So this is also on my list of things to do.
 
+#### Add Words to spelling_dict {}
+
+Right now, the spelling_dict is hard-coded, which means I need a version update just to add words and limits the ability of users to add their own words.
+
+It would be better to check if the user has a spelling_dict file, load it if available, or else load the default spelling_dict if not available.
+
 #### Add a Tutorial
 
 The tool is not complicated to use, and all the functionality is in the menus across the stop. Still, it may be valuable to add a tutorial for new users who are not used to it already.
-
-## References
 
    [1]: mailto:ryan@quandyfactory.com
 
