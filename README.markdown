@@ -147,6 +147,10 @@ Some time in the future, I might add support for PottyMouth as well.
 
 ### Missing Functionality
 
+#### thead, tbody in `table` code
+
+Generated tables (convert or new) should wrap the header row in a `thead` element and the body in a `tbody` element.
+
 #### HTML Preview
 
 A handy feature would be an HTML Preview so you can see what your code will look like.
@@ -165,9 +169,6 @@ Right now, the spelling_dict is hard-coded, which means I need a version update 
 
 It would be better to check if the user has a spelling_dict file, load it if available, or else load the default spelling_dict if not available.
 
-#### Add a Tutorial
-
-The tool is not complicated to use, and all the functionality is in the menus across the stop. Still, it may be valuable to add a tutorial for new users who are not used to it already.
 
    [1]: mailto:ryan@quandyfactory.com
 
