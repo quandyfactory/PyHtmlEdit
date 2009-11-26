@@ -17,13 +17,19 @@ Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/li
 
 ## This Version
 
-  * Version: 0.5
+  * Version: 0.51
 
-  * Release Date: 2009-09-29
+  * Release Date: 2009-11-25
 
 ## Revision History
 
-### Version: 0.5
+### Version: 0.51
+
+  * Release Date: 2009-11-25
+
+  * Changes:
+
+    * Generated tables (new and convert) now include `thead` and `tbody` elements.
 
   * Release Date: 2009-09-29
 
@@ -146,10 +152,6 @@ Added in version 0.3.
 Some time in the future, I might add support for PottyMouth as well.
 
 ### Missing Functionality
-
-#### thead, tbody in `table` code
-
-Generated tables (convert or new) should wrap the header row in a `thead` element and the body in a `tbody` element.
 
 #### HTML Preview
 

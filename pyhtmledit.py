@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-__version__ = 0.5
-__releasedate__ = '2009-09-29'
+__version__ = 0.51
+__releasedate__ = '2009-11-25'
 __author__ = 'Ryan McGreal <ryan@quandyfactory.com>'
 __homepage__ = 'http://quandyfactory.com/projects/2/pyhtmledit/'
 __repository__ = 'http://github.com/quandyfactory/PyHtmlEdit'
@@ -331,10 +331,16 @@ def make_table(caption, rows, cols, attributes = {}):
         if row == 0:
             comment = ' <!-- first row has table headings -->'
             tag = 'th'
-        output.append('  <tr>%s' % comment)
+            output.append('  <thead>')
+        output.append('    <tr>%s' % comment)
         for col in range(cols):
-            output.append('    <%s></%s>' % (tag, tag))
-        output.append('  </tr>')
+            output.append('      <%s></%s>' % (tag, tag))
+        
+        if row == 0:
+            output.append('  </head>')
+            output.append('  <tbody>')    
+        output.append('    </tr>')
+    output.append('  </tbody>')
     output.append('</table>')
     return '\n'.join(output)
 
@@ -753,14 +759,19 @@ class MainWindow(wx.Frame):
         addline('<table>')
         addline('<caption>%s</caption>' % caption)
         for row in tdata:
-            addline('<tr>')
             cells = row.split('\t')
             tag = 'td'; comment = ''
             if tdata.index(row) == 0: 
                 tag = 'th'; comment = '<!-- first row has table headings -->'
+                addline('  <thead>')
+            addline('    <tr>')
             for cell in cells:
-                addline('<%s>%s</%s>' % (tag, cell, tag))
-            addline('</tr>')
+                addline('      <%s>%s</%s>' % (tag, cell, tag))
+            if tdata.index(row) == 0:
+                addline('  </thead>')
+                addline('  <tbody>')
+            addline('    </tr>')
+        addline('  </tbody>')
         addline('</table>')
         self.control.WriteText('\n'.join(output))
         
