@@ -31,6 +31,8 @@ Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/li
 
     * Generated tables (new and convert) now include `thead` and `tbody` elements.
 
+### Version: 0.5
+
   * Release Date: 2009-09-29
 
   * Changes:
