@@ -17,11 +17,19 @@ Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/li
 
 ## This Version
 
-  * Version: 0.51
+  * Version: 0.52
 
-  * Release Date: 2009-11-25
+  * Release Date: 2009-12-01
 
 ## Revision History
+
+### Version: 0.52
+
+  * Release Date: 2009-12-01
+
+  * Changes:
+
+    * Word Count now includes a separate count of non-blank lines
 
 ### Version: 0.51
 

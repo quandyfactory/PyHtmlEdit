@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-__version__ = 0.51
-__releasedate__ = '2009-11-25'
+__version__ = 0.52
+__releasedate__ = '2009-12-01'
 __author__ = 'Ryan McGreal <ryan@quandyfactory.com>'
 __homepage__ = 'http://quandyfactory.com/projects/2/pyhtmledit/'
 __repository__ = 'http://github.com/quandyfactory/PyHtmlEdit'
@@ -495,7 +495,7 @@ class MainWindow(wx.Frame):
         format_menu.Append(ID_MISSPELLINGS, 'Common &Misspellings', 'Replace commonly misspelled words with the correct spelling')
 
         tools_menu = wx.Menu()
-        tools_menu.Append(ID_WORDCOUNT, "&Word Count", "Return a count of words")
+        tools_menu.Append(ID_WORDCOUNT, "&Word Count", "Word count, line count, etc.")
         tools_menu.Append(ID_strip_html, "&Strip HTML", "Remove all HTML elements and leave the text")
         tools_menu.Append(ID_HTML2TEXT, "&Html2Text", "Convert HTML into Markdown-formatted plain text")
         if markdown != False:
@@ -802,10 +802,15 @@ class MainWindow(wx.Frame):
         # first, try to get the selected text
         selection = self.control.StringSelection
         # if no selected text, use entire document
-        if len(selection) == 0: selection = self.control.Value
+        if len(selection) == 0: 
+            selection = self.control.Value
         # get count of lines
         linelist = selection.split('\n')
         lines = len(linelist)
+        # get count of active lines
+        activelines = 0
+        for line in linelist:
+            if line != '': activelines += 1
         # get count of characters
         chars = len(selection)
         # remove HTML tags
@@ -820,7 +825,7 @@ class MainWindow(wx.Frame):
         wordlist = selection.split(' ')
         # get count of words
         words = len(wordlist)
-        msg = wx.MessageBox('Chars: %s\nWords: %s\nLines: %s' % (chars, words, lines), 'Word Count')
+        msg = wx.MessageBox('Chars: %s\nWords: %s\nLines: %s\nNon-Blank Lines: %s' % (chars, words, lines, activelines), 'Word Count')
 
     def on_strip_html(self,e):
         self.control.WriteText(strip_html(self.control.StringSelection))
