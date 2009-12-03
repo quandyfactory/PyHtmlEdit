@@ -17,11 +17,19 @@ Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/li
 
 ## This Version
 
-  * Version: 0.52
+  * Version: 0.53
 
-  * Release Date: 2009-12-01
+  * Release Date: 2009-12-02
 
 ## Revision History
+
+### Version: 0.53
+
+  * Release Date: 2009-12-02
+
+  * Changes:
+
+    * Clean function now replaces multiple spaces with a single space
 
 ### Version: 0.52
 

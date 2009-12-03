@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-__version__ = 0.52
-__releasedate__ = '2009-12-01'
+__version__ = 0.53
+__releasedate__ = '2009-12-02'
 __author__ = 'Ryan McGreal <ryan@quandyfactory.com>'
 __homepage__ = 'http://quandyfactory.com/projects/2/pyhtmledit/'
 __repository__ = 'http://github.com/quandyfactory/PyHtmlEdit'
@@ -231,6 +231,14 @@ def check_last_update(user='', repo='', proxies = {}):
     else:
         return 'current'
 
+def remove_multiple_spaces(text):
+    """
+    Replaces multiple   spaces (like the spaces between "multiple" and "spaces") with one space.
+    """
+    while '  ' in text:
+        text = text.replace('  ', ' ')
+    return text
+
 def replace_it(find, replace, selection):
     """
     Takes a selection of text and replaces the value of find with the value of replace.
@@ -253,6 +261,7 @@ def clean_it(text):
     Takes a text string, applies the kill_gremlins function to replace cp1252 characters with Unicode, then runs the cleanchars filter
     """
     text = kill_gremlins(text)
+    text = remove_multiple_spaces(text)
     for k, v in CleanChars.items(): 
         text = text.replace(k, v)
     return text
@@ -490,7 +499,7 @@ class MainWindow(wx.Frame):
         format_menu.Append(ID_UCASE, "&UCASE", "Convert text to uppercase")
         format_menu.Append(ID_PCASE, "&Pcase", "Convert text to proper case (capitalized)")
         format_menu.AppendSeparator()
-        format_menu.Append(ID_CLEAN, "&Clean", "Clean up MS Word characters")
+        format_menu.Append(ID_CLEAN, "&Clean", "Clean up MS Word characters and multiple spaces")
         format_menu.Append(ID_SQL, "&SaferSQL", "Replace SQL punctuation with entity codes")
         format_menu.Append(ID_MISSPELLINGS, 'Common &Misspellings', 'Replace commonly misspelled words with the correct spelling')
 
