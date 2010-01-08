@@ -17,11 +17,20 @@ Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/li
 
 ## This Version
 
-  * Version: 0.53
+  * Version: 0.54
 
-  * Release Date: 2009-12-02
+  * Release Date: 2010-01-07
 
 ## Revision History
+
+### Version: 0.54
+
+  * Release Date: 2010-01-07
+
+  * Changes:
+
+    * Finally added icon
+    * Removed extranous print statements from code
 
 ### Version: 0.53
 

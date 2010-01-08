@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-__version__ = 0.53
-__releasedate__ = '2009-12-02'
+__version__ = 0.54
+__releasedate__ = '2010-01-07'
 __author__ = 'Ryan McGreal <ryan@quandyfactory.com>'
 __homepage__ = 'http://quandyfactory.com/projects/2/pyhtmledit/'
 __repository__ = 'http://github.com/quandyfactory/PyHtmlEdit'
@@ -17,8 +17,10 @@ import pickle
 
 # import html2text
 path = os.path.dirname(sys.argv[0])
+filepath = globals()['__file__']
 abspath = os.path.abspath(path)
-print abspath
+filename = filepath.replace(abspath, '').replace('\\', '').replace('/', '')
+
 sys.path.extend([abspath, abspath + '/pygithubapi'])
 
 import html2text
@@ -301,7 +303,7 @@ def tag_it(tag, text, block = False, attributes = {}):
     """
     atts = ''
     if 'href' in attributes: 
-        print 'href starts with ' + attributes['href'][0:4].lower()
+        #print 'href starts with ' + attributes['href'][0:4].lower()
         if attributes['href'][0:4].lower() == 'http':
             attributes['target'] = '_blank'
     if attributes != {}: atts = make_attlist(attributes)
@@ -417,12 +419,19 @@ class MainWindow(wx.Frame):
         wx.Frame.__init__(self,parent,wx.ID_ANY, title, size=(300,300))
         
         self.encoding = 'utf-8'
-        # self.encoding = 'iso-8859-1'
         self.wxencoding = wx.FONTENCODING_UTF8
-        # self.wxencoding = wx.FONTENCODING_ISO8859_1
-        
-        #wx.SetDefaultPyEncoding(self.encoding)
 
+        # set icon
+
+        #print filename
+        #print abspath
+        
+        iconfile = 'webtools.ico'
+        filepath = os.path.abspath(__file__).replace(filename, '')
+        iconpath = '%s%s' % (filepath, iconfile)
+        icon = wx.Icon(iconpath, wx.BITMAP_TYPE_ICO)
+        self.SetIcon(icon)
+        
         # Add a text editor and a status bar
         # Each of these is within the current instance
         # so that we can refer to them later.
@@ -868,3 +877,4 @@ app = wx.PySimpleApp()
 view = MainWindow(None, "PyHtmlEdit")
 # Enter event loop
 app.MainLoop()
+
