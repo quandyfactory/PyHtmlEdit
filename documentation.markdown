@@ -60,7 +60,7 @@ Inserts the following block HTML elements:
 * <u>d</u>iv
 * <u>p</u>
 * p.<u>i</u>nitial - inserts a paragraph with class "initial"
-* p.ph<u>o</u>to - inserts a paragraph with class "photo" and an interior img (image source is highlighted text)
+* p.ph<u>o</u>to - inserts a paragraph with class "photo" and an interior img (image source is highlighted text; if a second line of text is also highlighted, that serves as the image title)
 * pr<u>e</u>
 
 ####<u>H</u>eading
