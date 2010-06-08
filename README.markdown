@@ -17,11 +17,20 @@ Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/li
 
 ## This Version
 
-  * Version: 0.54
+  * Version: 0.55
 
-  * Release Date: 2010-01-07
+  * Release Date: 2010-06-07
 
 ## Revision History
+
+### Version: 0.55
+
+  * Release Date: 2010-06-07
+
+  * Changes:
+
+    * Changed alt-h-b-o (convert block to image) so that if you highlight an image source on one line with the title on the next line, the function formats both.
+
 
 ### Version: 0.54
 
@@ -82,7 +91,7 @@ Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/li
     * PyGithubApi.py must be at least version 0.11 to work with this version of PyHtmlEdit.
     * Added `set_config(config)` to save configuration values in a pickled dictionary. Saves in a file called `pyhtmledit_config` in the same folder as `pyhtmledit.py`.
     * Added `get_config()` to get configuration values from a pickled dictionary
-    
+
 ### Version: 0.42
 
   * Release Date: 2009-09-24
@@ -91,7 +100,7 @@ Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/li
 
     * added check_last_update() function, which uses [pygithubapi](http://quandyfactory.com/projects/25/pygithubapi) and is available as "Check Version" from About menu. It compares __version__ with the latest commit date in the GitHub API for the PyHtmlEdit repository.
     * Added __repository__ variable to top to link to public repository
-    
+
 ### Version: 0.41
 
   * Release Date: 2009-09-22
@@ -100,7 +109,7 @@ Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/li
 
     * Modified Replace function to replace over entire document if no selection
     * Added release date to About page.
-    
+
 ### Version: 0.4
 
   * Release Date: 2009-09-22
@@ -109,8 +118,8 @@ Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/li
 
     * Fixed bug in table creation code that was adding </tble> as closing tag.
     * Added a Replace function that takes a selection of text and replaces the value of `find` with the value of `replace`.
-    * Added an SQL function that converts special SQL punctuation to entity codes. 
-    * Replaced CamelCase on function and method names to lowercase_with_underscores. 
+    * Added an SQL function that converts special SQL punctuation to entity codes.
+    * Replaced CamelCase on function and method names to lowercase_with_underscores.
     * Changed Markdown function to stop closing </p> tag from going to a new line on Windows, and also adding a blank line after each paragraph.
 
 ### Version: 0.3
@@ -218,4 +227,3 @@ It would be better to check if the user has a spelling_dict file, load it if ava
    [9]: http://www.wxpython.org/docs/api/wxversion-module.html
 
    [10]: http://aspn.activestate.com/ASPN/Mail/Message/wxpython-users/3698130
-

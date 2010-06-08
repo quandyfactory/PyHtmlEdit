@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-__version__ = 0.54
-__releasedate__ = '2010-01-07'
+__version__ = 0.55
+__releasedate__ = '2010-06-07'
 __author__ = 'Ryan McGreal <ryan@quandyfactory.com>'
 __homepage__ = 'http://quandyfactory.com/projects/2/pyhtmledit/'
 __repository__ = 'http://github.com/quandyfactory/PyHtmlEdit'
@@ -36,7 +36,7 @@ except:
 
 # allow users to convert markdown to HTML if they have markdown or markdown2 installed
 # initialize markdown marker
-markdown = False 
+markdown = False
 
 # try importing markdown
 try:
@@ -118,7 +118,7 @@ spelling_dict = {
     'Concensus': 'Consensus',
     'Councilor': 'Councillor',
     'councilor': 'Councillor',
-    'councillor': 'Councillor',    
+    'councillor': 'Councillor',
     'definate': 'definite',
     'Definate': 'Definite',
     'embarass': 'embarrass',
@@ -126,7 +126,7 @@ spelling_dict = {
     'harrass': 'harass',
     'Harrass': 'Harass',
     'In order to': 'To',
-    'in order to': 'to',    
+    'in order to': 'to',
     'independant': 'independent',
     'Independant': 'Independent',
     'neighborhood': 'neighbourhood',
@@ -172,7 +172,7 @@ def get_config():
     # get config hash table
     config = pickle.load(fread)
     return config
-    
+
 def set_config(config):
     """
     Saves appplication config data.
@@ -183,7 +183,7 @@ def set_config(config):
         pickle.dump(config, fwrite)
     else:
         raise TypeError, (type(b).__name__, 'Error: config must be a dictionary')
-    
+
 
 def kill_gremlins(text):
     """
@@ -198,7 +198,7 @@ def kill_gremlins(text):
             text = unicode(text, "iso-8859-1")
         text = re.sub(u"[\x80-\x9f]", fixup, text)
     return text
-    
+
 # catch funky punctuation and replace with ascii
 CleanChars = {
     u'\u2026': u'...',# HORIZONTAL ELLIPSIS
@@ -214,10 +214,10 @@ def fix_common_misspellings(text):
     """
     Automatically replaces commonly misspelled words with their correct spellings. Case sensitive.
     """
-    for k, v in spelling_dict.items(): 
+    for k, v in spelling_dict.items():
         text = text.replace(k, v)
     return text
-    
+
 
 def check_last_update(user='', repo='', proxies = {}):
     """
@@ -227,7 +227,7 @@ def check_last_update(user='', repo='', proxies = {}):
         last_update = github.get_last_commit(user=user, repo=repo, proxies=proxies)
     except:
         return 'no connection'
-    
+
     if last_update > __releasedate__:
         return last_update
     else:
@@ -264,7 +264,7 @@ def clean_it(text):
     """
     text = kill_gremlins(text)
     text = remove_multiple_spaces(text)
-    for k, v in CleanChars.items(): 
+    for k, v in CleanChars.items():
         text = text.replace(k, v)
     return text
 
@@ -273,7 +273,7 @@ def safer_sql(text):
     Replaces SQL punctuation with entity codes
     """
     text = clean_it(text)
-    for k, v in SQLReplace.items(): 
+    for k, v in SQLReplace.items():
         text = text.replace(k, v)
     return text
 
@@ -282,7 +282,7 @@ def strip_html(stuff):
     Takes a string with HTML tags and returns the string with the HTML tags removed.
     """
     import re
-    return re.sub(r'<[^>]*?>', '', stuff) 
+    return re.sub(r'<[^>]*?>', '', stuff)
 
 def make_attlist(attributes):
     """
@@ -302,7 +302,7 @@ def tag_it(tag, text, block = False, attributes = {}):
     Also takes an option_al diction_ary of attributes to include in the opening tag.
     """
     atts = ''
-    if 'href' in attributes: 
+    if 'href' in attributes:
         #print 'href starts with ' + attributes['href'][0:4].lower()
         if attributes['href'][0:4].lower() == 'http':
             attributes['target'] = '_blank'
@@ -326,7 +326,7 @@ def list_it(tag, liststring, attributes = {}):
         output.append('<li>%s</li>' % item)
     output.append('</%s>' % tag)
     return '\n'.join(output)
-    
+
 def make_table(caption, rows, cols, attributes = {}):
     """
     Takes a caption string and integer numbers of rows and cols, and returns an empty HTML table.
@@ -346,10 +346,10 @@ def make_table(caption, rows, cols, attributes = {}):
         output.append('    <tr>%s' % comment)
         for col in range(cols):
             output.append('      <%s></%s>' % (tag, tag))
-        
+
         if row == 0:
             output.append('  </head>')
-            output.append('  <tbody>')    
+            output.append('  <tbody>')
         output.append('    </tr>')
     output.append('  </tbody>')
     output.append('</table>')
@@ -417,7 +417,7 @@ class MainWindow(wx.Frame):
     def __init__(self,parent,title):
         # based on a frame, so set up the frame
         wx.Frame.__init__(self,parent,wx.ID_ANY, title, size=(300,300))
-        
+
         self.encoding = 'utf-8'
         self.wxencoding = wx.FONTENCODING_UTF8
 
@@ -425,13 +425,13 @@ class MainWindow(wx.Frame):
 
         #print filename
         #print abspath
-        
+
         iconfile = 'webtools.ico'
         filepath = os.path.abspath(__file__).replace(filename, '')
         iconpath = '%s%s' % (filepath, iconfile)
         icon = wx.Icon(iconpath, wx.BITMAP_TYPE_ICO)
         self.SetIcon(icon)
-        
+
         # Add a text editor and a status bar
         # Each of these is within the current instance
         # so that we can refer to them later.
@@ -442,7 +442,7 @@ class MainWindow(wx.Frame):
         #self.control.SetLeftIndent(10)
         #self.control.SetRightIndent(10)
         self.CreateStatusBar() # A Statusbar in the bottom of the window
-        
+
         # Setting up the menu. filemenu is a local variable at this stage.
         filemenu = wx.Menu()
         # use ID_ for future easy reference - much better that "48", "404" etc
@@ -452,7 +452,7 @@ class MainWindow(wx.Frame):
         filemenu.Append(ID_SAVE, "&Save"," Save file")
         filemenu.AppendSeparator()
         filemenu.Append(ID_EXIT,"E&xit"," Terminate the program")
-        
+
         inline_menu = wx.Menu()
         inline_menu.Append(ID_CITE, "&cite", "Citation")
         inline_menu.Append(ID_EM, "&em", "Emphasis")
@@ -461,7 +461,7 @@ class MainWindow(wx.Frame):
         inline_menu.Append(ID_STRONG, "&strong", "Strong emphasis")
         inline_menu.Append(ID_SUB, "su&b","Subscript")
         inline_menu.Append(ID_SUP, "su&p","Superscript")
-        
+
         block_menu = wx.Menu()
         block_menu.Append(ID_BLOCKQUOTE, "&blockquote", "Block quotation")
         block_menu.Append(ID_DIV, "&div", "Generic block element")
@@ -469,7 +469,7 @@ class MainWindow(wx.Frame):
         block_menu.Append(ID_PINITIAL, "p.&initial", "First paragraph in an article or section")
         block_menu.Append(ID_PPHOTO, "p.ph&oto", "Paragraph with photo")
         block_menu.Append(ID_PRE, "pr&e", "Preformatted block text")
-        
+
         heading_menu = wx.Menu()
         heading_menu.Append(ID_H1, "h&1", "Heading 1")
         heading_menu.Append(ID_H2, "h&2", "Heading 2")
@@ -481,13 +481,13 @@ class MainWindow(wx.Frame):
         link_menu = wx.Menu()
         link_menu.Append(ID_A, "&a", "Anchor")
         link_menu.Append(ID_HREF, "a &href", "Hyperlink")
-        
+
         nested_menu = wx.Menu()
         nested_menu.Append(ID_OL, "&ol", "Ordered list")
         nested_menu.Append(ID_UL, "&ul", "Unordered List")
         nested_menu.Append(ID_TABLECONVERT, "table (&convert)", "Convert existing tab data to a table")
         nested_menu.Append(ID_TABLENEW, "table (&new)", "Create new empty table with 4 rows and 4 columns")
-        
+
         htmlmenu = wx.Menu()
         htmlmenu.AppendMenu(ID_INLINEMENU, "&Inline", inline_menu)
         htmlmenu.AppendSeparator()
@@ -498,7 +498,7 @@ class MainWindow(wx.Frame):
         htmlmenu.AppendMenu(ID_LINKMENU, "&Link", link_menu)
         htmlmenu.AppendSeparator()
         htmlmenu.AppendMenu(ID_NESTEDMENU, "&Nested", nested_menu)
-        
+
         format_menu = wx.Menu()
         #format_menu.Append(ID_SWITCHMODE, "Switch &Mode", "Alternate between Edit Mode and Preview Mode")
         #format_menu.AppendSeparator()
@@ -518,20 +518,20 @@ class MainWindow(wx.Frame):
         tools_menu.Append(ID_HTML2TEXT, "&Html2Text", "Convert HTML into Markdown-formatted plain text")
         if markdown != False:
             tools_menu.Append(ID_MARKDOWN, "&Markdown", "Convert Markdown-formatted plain text into HTML")
-        
+
         about_menu = wx.Menu()
         about_menu.Append(ID_ABOUT, "&About PyHtmlEdit","Information about this program")
         if github is not False:
             about_menu.Append(ID_UPDATED, "&Check Version","Checks this program's GitHub repository to see if there is a newer version.")
-        
+
         # Creating the menubar.
         menuBar = wx.MenuBar()
-        menuBar.Append(filemenu, "&File") 
+        menuBar.Append(filemenu, "&File")
         menuBar.Append(htmlmenu, "&HTML")
         menuBar.Append(format_menu, "F&ormat")
         menuBar.Append(tools_menu, "&Tools")
         menuBar.Append(about_menu, "&About")
-        
+
         self.SetMenuBar(menuBar)  # Adding the MenuBar to the Frame content.
 
         # Define the code to be run when a menu option is selected
@@ -583,7 +583,7 @@ class MainWindow(wx.Frame):
 
         self.aboutme = wx.MessageDialog(self, "PyHtmlEdit is a simple HTML editor written in Python using the wxPython GUI library (v2.8).\n\nCreated by %s\n\nVersion %s, Released on %s\n\n%s\n\nHomepage: %s" % (__author__, __version__, __releasedate__, __copyright__, __homepage__), "About PyHtmlEdit", wx.OK)
         self.doiexit = wx.MessageDialog(self, "Are you sure you want to exit? \n", "Confirm Exit", wx.YES_NO)
-        
+
         self.dirname = ''
 
     def on_updated(self,e):
@@ -593,31 +593,31 @@ class MainWindow(wx.Frame):
         github_user = 'quandyfactory'
         github_repo = 'PyHtmlEdit'
         config = get_config()
-        
+
         try:
             proxy = config['proxy']
         except:
             proxy = ''
-            
+
         if proxy != '':
             proxies = {'http': proxy }
             last_updated = check_last_update(user=github_user, repo=github_repo, proxies=proxies)
         else:
             last_updated = check_last_update(user=github_user, repo=github_repo)
-            
+
         if last_updated == 'no connection':
-            dlg_proxy = wx.TextEntryDialog(self, 
+            dlg_proxy = wx.TextEntryDialog(self,
                 'This program cannot connect to the internet.\n\n' +
-                'If you know the http proxy server and port, you can enter it here to see if that works.', 
-                'No Connection to Internet',  
+                'If you know the http proxy server and port, you can enter it here to see if that works.',
+                'No Connection to Internet',
                 defaultValue=proxy
                 )
-                
+
             dlg_proxy.SetValue("")
-            
+
             if dlg_proxy.ShowModal() == wx.ID_OK:
                 proxy = dlg_proxy.GetValue()
-                if proxy[:7] != 'http://': 
+                if proxy[:7] != 'http://':
                     proxy = 'http://' + proxy
                 proxies = { 'http': proxy }
                 last_updated = check_last_update(user=github_user, repo=github_repo, proxies=proxies)
@@ -632,10 +632,10 @@ class MainWindow(wx.Frame):
             self.uptodate.ShowModal()
         else:
             self.uptodate = wx.MessageDialog(self, "A newer version of PyHtmlEdit was published on %s.\n\nYou can download it from here:\n\n%s" % (last_updated, __repository__), "Newer Version Available", wx.OK)
-            self.uptodate.ShowModal()            
+            self.uptodate.ShowModal()
 
-            
-    
+
+
     def on_about(self,e):
         """
         Show About page as a dialog.
@@ -678,14 +678,14 @@ class MainWindow(wx.Frame):
             filehandle.write(itcontains)
             filehandle.close()
         dlg.Destroy()
-        
+
     def on_misspelling(self,e):
         """
         Replace common misspellings with correct spelling.
         """
         self.control.WriteText(fix_common_misspellings(self.control.StringSelection))
-    
-    
+
+
     def on_strong(self,e):
         """
         Wrap <strong> element around selection
@@ -714,7 +714,11 @@ class MainWindow(wx.Frame):
         self.control.WriteText(tag_it('p', self.control.StringSelection))
 
     def on_photo(self,e):
-        self.control.WriteText('<p class="photo">\n<img src="%s" alt="" title=""><br>\n\n</p>\n' % self.control.StringSelection)
+        twolines = self.control.StringSelection.split('\n')
+        src = twolines[0].strip()
+        try: alt = twolines[1].strip()
+        except: alt = ''
+        self.control.WriteText('<p class="photo">\n<img src="%s" alt="%s" title="%s"><br>\n%s</p>\n' % (src, alt, alt, alt))
 
     def on_p_initial(self,e):
         self.control.WriteText(tag_it('p', self.control.StringSelection, attributes = {'class':'initial'}))
@@ -779,7 +783,7 @@ class MainWindow(wx.Frame):
         for row in tdata:
             cells = row.split('\t')
             tag = 'td'; comment = ''
-            if tdata.index(row) == 0: 
+            if tdata.index(row) == 0:
                 tag = 'th'; comment = '<!-- first row has table headings -->'
                 addline('  <thead>')
             addline('    <tr>')
@@ -792,7 +796,7 @@ class MainWindow(wx.Frame):
         addline('  </tbody>')
         addline('</table>')
         self.control.WriteText('\n'.join(output))
-        
+
     def on_ucase(self,e):
         self.control.WriteText(self.control.StringSelection.upper())
 
@@ -820,7 +824,7 @@ class MainWindow(wx.Frame):
         # first, try to get the selected text
         selection = self.control.StringSelection
         # if no selected text, use entire document
-        if len(selection) == 0: 
+        if len(selection) == 0:
             selection = self.control.Value
         # get count of lines
         linelist = selection.split('\n')
@@ -853,7 +857,7 @@ class MainWindow(wx.Frame):
 
     def on_switch_mode(self,e):
         pass
-    
+
     def on_replace(self,e):
         """
         Asks for a find string and a replace string, and replaces the former with the latter
@@ -877,4 +881,3 @@ app = wx.PySimpleApp()
 view = MainWindow(None, "PyHtmlEdit")
 # Enter event loop
 app.MainLoop()
-
