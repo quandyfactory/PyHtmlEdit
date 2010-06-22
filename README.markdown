@@ -17,11 +17,19 @@ Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/li
 
 ## This Version
 
-  * Version: 0.55
+  * Version: 0.56
 
-  * Release Date: 2010-06-07
+  * Release Date: 2010-06-22
 
 ## Revision History
+
+### Version: 0.56
+
+  * Release Date: 2010-06-22
+
+  * Changes:
+
+    * Fixed small bug in Excel-to-table converter to trim extraneous white space from data rows.
 
 ### Version: 0.55
 
