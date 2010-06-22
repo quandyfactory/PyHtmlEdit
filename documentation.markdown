@@ -17,8 +17,8 @@ This document is licenced under the GNU Free Documentation Licence, v. 1.3 http:
 
 ##This Version
 
-* Version 0.5
-* Release Date: 2009-10-07
+* Version 0.56
+* Release Date: 2010-06-22
 
 ##Functions
 
@@ -81,7 +81,7 @@ Inserts the following block HTML elements:
 
 * <u>u</u>l - highlight a linebreak-separated list of items
 * <u>o</u>l - highlight a linebreak-separated list of items
-* table (<u>c</u>onvert) - sets rows based on linebreaks, cols based on tabs
+* table (<u>c</u>onvert) - sets rows based on line breaks, cols based on tabs
 * table (<u>n</u>ew) - generates a simple 4x4 table with a caption
 
 ### F<u>o</u>rmat
