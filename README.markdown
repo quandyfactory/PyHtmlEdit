@@ -21,6 +21,67 @@ Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/li
 
   * Release Date: 2010-06-22
 
+## Requirements
+
+  * Python 2.5 or newer (not Python 3) [http://www.python.org/](http://www.python.org/)
+  * wxPython 2.8 [http://www.wxpython.org/](http://www.wxpython.org/)
+  * python-markdown [http://www.freewisdom.org/projects/python-markdown/](http://www.freewisdom.org/projects/python-markdown/) or python-markdown2 [http://code.google.com/p/python-markdown2/](http://code.google.com/p/python-markdown2/)
+  * pyyaml [http://pyyaml.org/](http://pyyaml.org/)
+
+## Notes
+
+### wxPython version
+
+This program requires wxPython 2.8, and specifically makes use of the TextCtrl StringSelection property, which doesn't exist in wxPython 2.6.
+
+My home system (Ubuntu 9.04 Jaunty) comes with wxPython 2.6 pre-installed, and apparently some basic system code depends on this older version, so I had to install 2.8 separately:
+
+[http://wiki.wxpython.org/InstallingOnUbuntuOrDebian][8]
+
+Unfortunately, when importing wx, Python grabs the older version by default, not the newer one. The solution is to import wxversion first, and select version 2.8, as per this example:
+
+[http://www.wxpython.org/docs/api/wxversion-module.html][9]
+
+Fixed from version 0.1.
+
+### Markdown
+
+This software does not come bundled with a markdown parser. It checks your system to see if you already have python-markdown installed.
+
+[http://www.freewisdom.org/projects/python-markdown/][6]
+
+If not, it checks to see if you have python-markdown2 installed.
+
+[http://code.google.com/p/python-markdown2/][7]
+
+Note: both modules are available through easy_install.
+
+If you have one of these modules installed, it provides the ability to convert markdown syntax to HTML in the Tools menu. If you don't have either module installed, it simply doesn't offer that function.
+
+Added in version 0.3.
+
+Some time in the future, I might add support for PottyMouth as well.
+
+### Missing Functionality
+
+#### HTML Preview
+
+A handy feature would be an HTML Preview so you can see what your code will look like.
+
+#### Toggle Line Wrap
+
+I'd like to be able to toggle between line wrapping and horizontal scrolling, but apparently you can't change the style wx.TE_MULTILINE on a TextCtrl after creating it. Instead, you would have to subclass the control and flip between two controls, one of which is set to wrap and the other set to scroll.
+
+[http://aspn.activestate.com/ASPN/Mail/Message/wxpython-users/3698130][10]
+
+So this is also on my list of things to do.
+
+#### Add Words to spelling_dict {}
+
+Right now, the spelling_dict is hard-coded, which means I need a version update just to add words and limits the ability of users to add their own words.
+
+It would be better to check if the user has a spelling_dict file, load it if available, or else load the default spelling_dict if not available.
+
 ## Revision History
 
 ### Version: 0.56
@@ -153,68 +214,6 @@ Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/li
 ### Version: 0.1
 
   * Release Date: 2009-08-06
-
-## Requirements
-
-  * Python 2.5 or newer (not Python 3) [http://www.python.org/](http://www.python.org/)
-  * wxPython 2.8 [http://www.wxpython.org/](http://www.wxpython.org/)
-  * python-markdown [http://www.freewisdom.org/projects/python-markdown/](http://www.freewisdom.org/projects/python-markdown/) or python-markdown2 [http://code.google.com/p/python-markdown2/](http://code.google.com/p/python-markdown2/)
-  * pyyaml [http://pyyaml.org/](http://pyyaml.org/)
-
-## Notes
-
-### wxPython version
-
-This program requires wxPython 2.8, and specifically makes use of the TextCtrl StringSelection property, which doesn't exist in wxPython 2.6.
-
-My home system (Ubuntu 9.04 Jaunty) comes with wxPython 2.6 pre-installed, and apparently some basic system code depends on this older version, so I had to install 2.8 separately:
-
-[http://wiki.wxpython.org/InstallingOnUbuntuOrDebian][8]
-
-Unfortunately, when importing wx, Python grabs the older version by default, not the newer one. The solution is to import wxversion first, and select version 2.8, as per this example:
-
-[http://www.wxpython.org/docs/api/wxversion-module.html][9]
-
-Fixed from version 0.1.
-
-### Markdown
-
-This software does not come bundled with a markdown parser. It checks your system to see if you already have python-markdown installed.
-
-[http://www.freewisdom.org/projects/python-markdown/][6]
-
-If not, it checks to see if you have python-markdown2 installed.
-
-[http://code.google.com/p/python-markdown2/][7]
-
-Note: both modules are available through easy_install.
-
-If you have one of these modules installed, it provides the ability to convert markdown syntax to HTML in the Tools menu. If you don't have either module installed, it simply doesn't offer that function.
-
-Added in version 0.3.
-
-Some time in the future, I might add support for PottyMouth as well.
-
-### Missing Functionality
-
-#### HTML Preview
-
-A handy feature would be an HTML Preview so you can see what your code will look like.
-
-#### Toggle Line Wrap
-
-I'd like to be able to toggle between line wrapping and horizontal scrolling, but apparently you can't change the style wx.TE_MULTILINE on a TextCtrl after creating it. Instead, you would have to subclass the control and flip between two controls, one of which is set to wrap and the other set to scroll.
-
-[http://aspn.activestate.com/ASPN/Mail/Message/wxpython-users/3698130][10]
-
-So this is also on my list of things to do.
-
-#### Add Words to spelling_dict {}
-
-Right now, the spelling_dict is hard-coded, which means I need a version update just to add words and limits the ability of users to add their own words.
-
-It would be better to check if the user has a spelling_dict file, load it if available, or else load the default spelling_dict if not available.
-
 
    [1]: mailto:ryan@quandyfactory.com
 
