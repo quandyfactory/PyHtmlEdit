@@ -17,9 +17,9 @@ Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/li
 
 ## This Version
 
-  * Version: 0.56
+  * Version: 0.57
 
-  * Release Date: 2010-06-22
+  * Release Date: 2011-02-10
 
 ## Requirements
 
@@ -83,6 +83,14 @@ Right now, the spelling_dict is hard-coded, which means I need a version update 
 It would be better to check if the user has a spelling_dict file, load it if available, or else load the default spelling_dict if not available.
 
 ## Revision History
+
+### Version: 0.57
+
+  * Release Date: 2011-02-10
+
+  * Changes:
+
+    * Add blank line between block elements in Tools -> Markdown.
 
 ### Version: 0.56
 
