@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-__version__ = 0.56
-__releasedate__ = '2010-06-22'
+__version__ = 0.57
+__releasedate__ = '2011-02-10'
 __author__ = 'Ryan McGreal <ryan@quandyfactory.com>'
 __homepage__ = 'http://quandyfactory.com/projects/2/pyhtmledit/'
 __repository__ = 'http://github.com/quandyfactory/PyHtmlEdit'
@@ -254,6 +254,9 @@ def markdown_it(text):
     if markdown != False:
         markeddown = markdown(text)
         markeddown = markeddown.replace('\n</p>', '</p>\n') # fix bug in Windows
+        block_tags = '</p> </ul> </ol> </blockquote> </h1> </h2> </h3> </h4> </h5> </h6> </div>'.split(' ')
+        for tag in block_tags:
+            markeddown = markeddown.replace(tag, '%s%s' % (tag, '\n'))
         return markeddown
     else:
         return text
