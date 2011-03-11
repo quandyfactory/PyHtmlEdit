@@ -86,11 +86,11 @@ It would be better to check if the user has a spelling_dict file, load it if ava
 
 ### Version 0.58
 
-    * Release Date: 2011-03-11
+* Release Date: 2011-03-11
 
-    * Changes:
+* Changes:
 
-        * Added `try ... except` ImportError around `import wxversion` to catch people who don't have wx installed.
+    * Added `try ... except` ImportError around `import wxversion` to catch people who don't have wx installed.
 
 ### Version: 0.57
 
