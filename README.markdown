@@ -17,9 +17,9 @@ Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/li
 
 ## This Version
 
-  * Version: 0.57
+  * Version: 0.58
 
-  * Release Date: 2011-02-10
+  * Release Date: 2011-03-11
 
 ## Requirements
 
@@ -83,6 +83,14 @@ Right now, the spelling_dict is hard-coded, which means I need a version update 
 It would be better to check if the user has a spelling_dict file, load it if available, or else load the default spelling_dict if not available.
 
 ## Revision History
+
+### Version 0.58
+
+    * Release Date: 2011-03-11
+
+    * Changes:
+
+        * Added `try ... except` ImportError around `import wxversion` to catch people who don't have wx installed.
 
 ### Version: 0.57
 
