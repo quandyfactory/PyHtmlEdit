@@ -1,16 +1,23 @@
 #!/usr/bin/env python
 
-__version__ = 0.56
-__releasedate__ = '2010-06-22'
+__version__ = 0.58
+__releasedate__ = '2011-03-11'
 __author__ = 'Ryan McGreal <ryan@quandyfactory.com>'
 __homepage__ = 'http://quandyfactory.com/projects/2/pyhtmledit/'
 __repository__ = 'http://github.com/quandyfactory/PyHtmlEdit'
 __copyright__ = '(C) 2009 by Ryan McGreal. Licenced under GNU GPL 2.0\nhttp://www.gnu.org/licenses/old-licenses/gpl-2.0.html'
 
-import wxversion
-wxversion.select('2.8')
 import sys
+
+try:
+    import wxversion
+except ImportError:
+    print "You must have the wxPython GUI library installed to use this application."
+    sys.exit()
+    
+wxversion.select('2.8')
 import wx
+
 import re
 import os
 import pickle
@@ -254,6 +261,9 @@ def markdown_it(text):
     if markdown != False:
         markeddown = markdown(text)
         markeddown = markeddown.replace('\n</p>', '</p>\n') # fix bug in Windows
+        block_tags = '</p> </ul> </ol> </blockquote> </h1> </h2> </h3> </h4> </h5> </h6> </div>'.split(' ')
+        for tag in block_tags:
+            markeddown = markeddown.replace(tag, '%s%s' % (tag, '\n'))
         return markeddown
     else:
         return text

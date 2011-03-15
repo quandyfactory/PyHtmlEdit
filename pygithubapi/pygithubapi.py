@@ -6,13 +6,18 @@ It requires PyYAML http://pyyaml.org/.
 Otherwise, save this module somewhere on the Python PATH and you should be good to go.
 """
 
-__version__ = 0.12
-__releasedate__ = '2009-09-28'
+__version__ = 0.13
+__releasedate__ = '2011-03-14'
 __author__ = 'Ryan McGreal <ryan@quandyfactory.com>'
 __homepage__ = 'http://quandyfactory.com/projects/2/githubapi/'
 __copyright__ = '(C) 2009 by Ryan McGreal. Licenced under GNU GPL 2.0\nhttp://www.gnu.org/licenses/old-licenses/gpl-2.0.html'
 
-import yaml
+try:
+    import yaml
+except:
+    print 'Python yaml library missing. Get it here: http://pyyaml.org/'
+    quit() # not much point in going on, is there?
+
 import urllib
 
 def get_last_commit(user='', repo='', proxies = {}):
