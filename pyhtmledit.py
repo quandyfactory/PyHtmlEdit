@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-__version__ = 0.58
-__releasedate__ = '2011-03-11'
+__version__ = 0.60
+__releasedate__ = '2011-08-15'
 __author__ = 'Ryan McGreal <ryan@quandyfactory.com>'
 __homepage__ = 'http://quandyfactory.com/projects/2/pyhtmledit/'
 __repository__ = 'http://github.com/quandyfactory/PyHtmlEdit'
@@ -16,7 +16,7 @@ except ImportError:
     sys.exit()
     
 wxversion.select('2.8')
-import wx
+from wx import *
 
 import re
 import os
@@ -47,16 +47,16 @@ markdown = False
 
 # try importing markdown
 try:
-	from markdown import markdown
+    from markdown import markdown
 except:
-	markdown = False
+    markdown = False
 
 # try importing markdown2
 if markdown == False:
-	try:
-		from markdown2 import markdown
-	except:
-		markdown = False
+    try:
+        from markdown2 import markdown
+    except:
+        markdown = False
 
 # the following hash table and kill_gremlins function are courtesy:
 # http://effbot.org/zone/unicode-gremlins.htm
@@ -191,6 +191,12 @@ def set_config(config):
     else:
         raise TypeError, (type(b).__name__, 'Error: config must be a dictionary')
 
+def remove_whitespace(text):
+    """
+    Remove all white space characters from a string
+    """
+    pattern = re.compile(r'\s+')
+    return re.sub(pattern, '', text)
 
 def kill_gremlins(text):
     """
@@ -264,6 +270,8 @@ def markdown_it(text):
         block_tags = '</p> </ul> </ol> </blockquote> </h1> </h2> </h3> </h4> </h5> </h6> </div>'.split(' ')
         for tag in block_tags:
             markeddown = markeddown.replace(tag, '%s%s' % (tag, '\n'))
+
+        markeddown = markeddown.replace('\n\n\n', '\n\n') # get rid of triple spaces between paragraphs on Windows
         return markeddown
     else:
         return text
@@ -419,17 +427,18 @@ ID_SQL = 43
 ID_REPLACE = 44
 ID_UPDATED = 45
 ID_MISSPELLINGS = 46
+#ID_STATUSBAR = 47
 
 # The basic code for this came from a free example I found somewhere online.
 # Unfortunately I've forgotten where I got it, so I can't attribute it properly.
 # If you recognize where this comes from, please let me know!
-class MainWindow(wx.Frame):
+class MainWindow(Frame):
     def __init__(self,parent,title):
         # based on a frame, so set up the frame
-        wx.Frame.__init__(self,parent,wx.ID_ANY, title, size=(300,300))
+        Frame.__init__(self, parent, ID_ANY, title, size=(600,400))
 
         self.encoding = 'utf-8'
-        self.wxencoding = wx.FONTENCODING_UTF8
+        self.wxencoding = FONTENCODING_UTF8
 
         # set icon
 
@@ -439,22 +448,25 @@ class MainWindow(wx.Frame):
         iconfile = 'webtools.ico'
         filepath = os.path.abspath(__file__).replace(filename, '')
         iconpath = '%s%s' % (filepath, iconfile)
-        icon = wx.Icon(iconpath, wx.BITMAP_TYPE_ICO)
+        icon = Icon(iconpath, BITMAP_TYPE_ICO)
         self.SetIcon(icon)
 
         # Add a text editor and a status bar
         # Each of these is within the current instance
         # so that we can refer to them later.
-        self.control = wx.TextCtrl(self, 1, style=wx.TE_MULTILINE | wx.TE_AUTO_URL | wx.TE_NOHIDESEL)
-        controlfont = wx.Font(10, wx.FONTFAMILY_TELETYPE, wx.NORMAL, wx.NORMAL) #, encoding = self.wxencoding)
-        #self.control.SetWindowStyleFlag(wx.TE_NOHIDESEL)
+        self.control = TextCtrl(self, 1, style=TE_MULTILINE | TE_AUTO_URL | TE_NOHIDESEL)
+        controlfont = Font(10, FONTFAMILY_TELETYPE, NORMAL, NORMAL) #, encoding = self.wxencoding)
+        #self.control.SetWindowStyleFlag(TE_NOHIDESEL)
         self.control.SetFont(controlfont)
         #self.control.SetLeftIndent(10)
         #self.control.SetRightIndent(10)
+
+        # status bar
         self.CreateStatusBar() # A Statusbar in the bottom of the window
+        self.SetStatusText('Chars: 0 | Words: 0 | Lines: 1 | Non-Blank Lines: 0')
 
         # Setting up the menu. filemenu is a local variable at this stage.
-        filemenu = wx.Menu()
+        filemenu = Menu()
         # use ID_ for future easy reference - much better that "48", "404" etc
         # The & character indicates the short cut key
         filemenu.Append(ID_OPEN, "&Open"," Open a file to edit")
@@ -463,7 +475,7 @@ class MainWindow(wx.Frame):
         filemenu.AppendSeparator()
         filemenu.Append(ID_EXIT,"E&xit"," Terminate the program")
 
-        inline_menu = wx.Menu()
+        inline_menu = Menu()
         inline_menu.Append(ID_CITE, "&cite", "Citation")
         inline_menu.Append(ID_EM, "&em", "Emphasis")
         inline_menu.Append(ID_CODE, "c&ode","Programming code")
@@ -472,7 +484,7 @@ class MainWindow(wx.Frame):
         inline_menu.Append(ID_SUB, "su&b","Subscript")
         inline_menu.Append(ID_SUP, "su&p","Superscript")
 
-        block_menu = wx.Menu()
+        block_menu = Menu()
         block_menu.Append(ID_BLOCKQUOTE, "&blockquote", "Block quotation")
         block_menu.Append(ID_DIV, "&div", "Generic block element")
         block_menu.Append(ID_P, "&p", "Paragraph")
@@ -480,7 +492,7 @@ class MainWindow(wx.Frame):
         block_menu.Append(ID_PPHOTO, "p.ph&oto", "Paragraph with photo")
         block_menu.Append(ID_PRE, "pr&e", "Preformatted block text")
 
-        heading_menu = wx.Menu()
+        heading_menu = Menu()
         heading_menu.Append(ID_H1, "h&1", "Heading 1")
         heading_menu.Append(ID_H2, "h&2", "Heading 2")
         heading_menu.Append(ID_H3, "h&3", "Heading 3")
@@ -488,17 +500,17 @@ class MainWindow(wx.Frame):
         heading_menu.Append(ID_H5, "h&5", "Heading 5")
         heading_menu.Append(ID_H6, "h&6", "Heading 6")
 
-        link_menu = wx.Menu()
+        link_menu = Menu()
         link_menu.Append(ID_A, "&a", "Anchor")
         link_menu.Append(ID_HREF, "a &href", "Hyperlink")
 
-        nested_menu = wx.Menu()
+        nested_menu = Menu()
         nested_menu.Append(ID_OL, "&ol", "Ordered list")
         nested_menu.Append(ID_UL, "&ul", "Unordered List")
         nested_menu.Append(ID_TABLECONVERT, "table (&convert)", "Convert existing tab data to a table")
         nested_menu.Append(ID_TABLENEW, "table (&new)", "Create new empty table with 4 rows and 4 columns")
 
-        htmlmenu = wx.Menu()
+        htmlmenu = Menu()
         htmlmenu.AppendMenu(ID_INLINEMENU, "&Inline", inline_menu)
         htmlmenu.AppendSeparator()
         htmlmenu.AppendMenu(ID_BLOCKMENU, "&Block", block_menu)
@@ -509,7 +521,7 @@ class MainWindow(wx.Frame):
         htmlmenu.AppendSeparator()
         htmlmenu.AppendMenu(ID_NESTEDMENU, "&Nested", nested_menu)
 
-        format_menu = wx.Menu()
+        format_menu = Menu()
         #format_menu.Append(ID_SWITCHMODE, "Switch &Mode", "Alternate between Edit Mode and Preview Mode")
         #format_menu.AppendSeparator()
         format_menu.Append(ID_REPLACE, '&Replace', 'Find and Replace a search string')
@@ -522,20 +534,20 @@ class MainWindow(wx.Frame):
         format_menu.Append(ID_SQL, "&SaferSQL", "Replace SQL punctuation with entity codes")
         format_menu.Append(ID_MISSPELLINGS, 'Common &Misspellings', 'Replace commonly misspelled words with the correct spelling')
 
-        tools_menu = wx.Menu()
-        tools_menu.Append(ID_WORDCOUNT, "&Word Count", "Word count, line count, etc.")
+        tools_menu = Menu()
+        #tools_menu.Append(ID_WORDCOUNT, "&Word Count", "Word count, line count, etc.")
         tools_menu.Append(ID_strip_html, "&Strip HTML", "Remove all HTML elements and leave the text")
         tools_menu.Append(ID_HTML2TEXT, "&Html2Text", "Convert HTML into Markdown-formatted plain text")
         if markdown != False:
             tools_menu.Append(ID_MARKDOWN, "&Markdown", "Convert Markdown-formatted plain text into HTML")
 
-        about_menu = wx.Menu()
+        about_menu = Menu()
         about_menu.Append(ID_ABOUT, "&About PyHtmlEdit","Information about this program")
         if github is not False:
             about_menu.Append(ID_UPDATED, "&Check Version","Checks this program's GitHub repository to see if there is a newer version.")
 
         # Creating the menubar.
-        menuBar = wx.MenuBar()
+        menuBar = MenuBar()
         menuBar.Append(filemenu, "&File")
         menuBar.Append(htmlmenu, "&HTML")
         menuBar.Append(format_menu, "F&ormat")
@@ -545,54 +557,57 @@ class MainWindow(wx.Frame):
         self.SetMenuBar(menuBar)  # Adding the MenuBar to the Frame content.
 
         # Define the code to be run when a menu option is selected
-        wx.EVT_MENU(self, ID_ABOUT, self.on_about)
-        wx.EVT_MENU(self, ID_EXIT, self.on_exit)
-        wx.EVT_MENU(self, ID_OPEN, self.on_open)
-        wx.EVT_MENU(self, ID_SAVE, self.on_save)
-        wx.EVT_MENU(self, ID_STRONG, self.on_strong)
-        wx.EVT_MENU(self, ID_EM, self.on_em)
-        wx.EVT_MENU(self, ID_SPAN, self.on_span)
-        wx.EVT_MENU(self, ID_CITE, self.on_cite)
-        wx.EVT_MENU(self, ID_SUB, self.on_sub)
-        wx.EVT_MENU(self, ID_SUP, self.on_sup)
-        wx.EVT_MENU(self, ID_CODE, self.on_code)
-        wx.EVT_MENU(self, ID_DIV, self.on_div)
-        wx.EVT_MENU(self, ID_P, self.on_p)
-        wx.EVT_MENU(self, ID_PPHOTO, self.on_photo)
-        wx.EVT_MENU(self, ID_PINITIAL, self.on_p_initial)
-        wx.EVT_MENU(self, ID_BLOCKQUOTE, self.on_blockquote)
-        wx.EVT_MENU(self, ID_PRE, self.on_pre)
-        wx.EVT_MENU(self, ID_H1, self.on_h1)
-        wx.EVT_MENU(self, ID_H2, self.on_h2)
-        wx.EVT_MENU(self, ID_H3, self.on_h3)
-        wx.EVT_MENU(self, ID_H4, self.on_h4)
-        wx.EVT_MENU(self, ID_H5, self.on_h5)
-        wx.EVT_MENU(self, ID_H6, self.on_h6)
-        wx.EVT_MENU(self, ID_A, self.on_a)
-        wx.EVT_MENU(self, ID_HREF, self.on_href)
-        wx.EVT_MENU(self, ID_UL, self.on_ul)
-        wx.EVT_MENU(self, ID_OL, self.on_ol)
-        wx.EVT_MENU(self, ID_TABLENEW, self.on_table_new)
-        wx.EVT_MENU(self, ID_TABLECONVERT, self.on_table_convert)
-        wx.EVT_MENU(self, ID_UCASE, self.on_ucase)
-        wx.EVT_MENU(self, ID_LCASE, self.on_lcase)
-        wx.EVT_MENU(self, ID_PCASE, self.on_pcase)
-        wx.EVT_MENU(self, ID_CLEAN, self.on_clean)
-        wx.EVT_MENU(self, ID_WORDCOUNT, self.on_word_count)
-        wx.EVT_MENU(self, ID_strip_html, self.on_strip_html)
-        wx.EVT_MENU(self, ID_TOGGLEWRAP, self.on_toggle_wrap)
-        wx.EVT_MENU(self, ID_SWITCHMODE, self.on_switch_mode)
-        wx.EVT_MENU(self, ID_HTML2TEXT, self.on_html2text)
-        wx.EVT_MENU(self, ID_MARKDOWN, self.on_markdown)
-        wx.EVT_MENU(self, ID_SQL, self.on_sql)
-        wx.EVT_MENU(self, ID_REPLACE, self.on_replace)
-        wx.EVT_MENU(self, ID_UPDATED, self.on_updated)
-        wx.EVT_MENU(self, ID_MISSPELLINGS, self.on_misspelling)
+        EVT_MENU(self, ID_ABOUT, self.on_about)
+        EVT_MENU(self, ID_EXIT, self.on_exit)
+        EVT_MENU(self, ID_OPEN, self.on_open)
+        EVT_MENU(self, ID_SAVE, self.on_save)
+        EVT_MENU(self, ID_STRONG, self.on_strong)
+        EVT_MENU(self, ID_EM, self.on_em)
+        EVT_MENU(self, ID_SPAN, self.on_span)
+        EVT_MENU(self, ID_CITE, self.on_cite)
+        EVT_MENU(self, ID_SUB, self.on_sub)
+        EVT_MENU(self, ID_SUP, self.on_sup)
+        EVT_MENU(self, ID_CODE, self.on_code)
+        EVT_MENU(self, ID_DIV, self.on_div)
+        EVT_MENU(self, ID_P, self.on_p)
+        EVT_MENU(self, ID_PPHOTO, self.on_photo)
+        EVT_MENU(self, ID_PINITIAL, self.on_p_initial)
+        EVT_MENU(self, ID_BLOCKQUOTE, self.on_blockquote)
+        EVT_MENU(self, ID_PRE, self.on_pre)
+        EVT_MENU(self, ID_H1, self.on_h1)
+        EVT_MENU(self, ID_H2, self.on_h2)
+        EVT_MENU(self, ID_H3, self.on_h3)
+        EVT_MENU(self, ID_H4, self.on_h4)
+        EVT_MENU(self, ID_H5, self.on_h5)
+        EVT_MENU(self, ID_H6, self.on_h6)
+        EVT_MENU(self, ID_A, self.on_a)
+        EVT_MENU(self, ID_HREF, self.on_href)
+        EVT_MENU(self, ID_UL, self.on_ul)
+        EVT_MENU(self, ID_OL, self.on_ol)
+        EVT_MENU(self, ID_TABLENEW, self.on_table_new)
+        EVT_MENU(self, ID_TABLECONVERT, self.on_table_convert)
+        EVT_MENU(self, ID_UCASE, self.on_ucase)
+        EVT_MENU(self, ID_LCASE, self.on_lcase)
+        EVT_MENU(self, ID_PCASE, self.on_pcase)
+        EVT_MENU(self, ID_CLEAN, self.on_clean)
+        EVT_MENU(self, ID_WORDCOUNT, self.on_word_count)
+        EVT_MENU(self, ID_strip_html, self.on_strip_html)
+        EVT_MENU(self, ID_TOGGLEWRAP, self.on_toggle_wrap)
+        EVT_MENU(self, ID_SWITCHMODE, self.on_switch_mode)
+        EVT_MENU(self, ID_HTML2TEXT, self.on_html2text)
+        EVT_MENU(self, ID_MARKDOWN, self.on_markdown)
+        EVT_MENU(self, ID_SQL, self.on_sql)
+        EVT_MENU(self, ID_REPLACE, self.on_replace)
+        EVT_MENU(self, ID_UPDATED, self.on_updated)
+        EVT_MENU(self, ID_MISSPELLINGS, self.on_misspelling)
+
+        # catch key up events to update statusbar
+        self.control.Bind(EVT_KEY_UP, self.update_statusbar) 
 
         self.Show(1)
 
-        self.aboutme = wx.MessageDialog(self, "PyHtmlEdit is a simple HTML editor written in Python using the wxPython GUI library (v2.8).\n\nCreated by %s\n\nVersion %s, Released on %s\n\n%s\n\nHomepage: %s" % (__author__, __version__, __releasedate__, __copyright__, __homepage__), "About PyHtmlEdit", wx.OK)
-        self.doiexit = wx.MessageDialog(self, "Are you sure you want to exit? \n", "Confirm Exit", wx.YES_NO)
+        self.aboutme = MessageDialog(self, "PyHtmlEdit is a simple HTML editor written in Python using the wxPython GUI library (v2.8).\n\nCreated by %s\n\nVersion %s, Released on %s\n\n%s\n\nHomepage: %s" % (__author__, __version__, __releasedate__, __copyright__, __homepage__), "About PyHtmlEdit", OK)
+        self.doiexit = MessageDialog(self, "Are you sure you want to exit? \n", "Confirm Exit", YES_NO)
 
         self.dirname = ''
 
@@ -616,7 +631,7 @@ class MainWindow(wx.Frame):
             last_updated = check_last_update(user=github_user, repo=github_repo)
 
         if last_updated == 'no connection':
-            dlg_proxy = wx.TextEntryDialog(self,
+            dlg_proxy = TextEntryDialog(self,
                 'This program cannot connect to the internet.\n\n' +
                 'If you know the http proxy server and port, you can enter it here to see if that works.',
                 'No Connection to Internet',
@@ -625,7 +640,7 @@ class MainWindow(wx.Frame):
 
             dlg_proxy.SetValue("")
 
-            if dlg_proxy.ShowModal() == wx.ID_OK:
+            if dlg_proxy.ShowModal() == ID_OK:
                 proxy = dlg_proxy.GetValue()
                 if proxy[:7] != 'http://':
                     proxy = 'http://' + proxy
@@ -635,13 +650,13 @@ class MainWindow(wx.Frame):
                 set_config(config)
 
         if last_updated == 'no connection':
-            self.uptodate = wx.MessageDialog(self, "Sorry, but the proxy connection did not work.\n\nHey, it was worth a try.", "No Connection to Internet", wx.OK)
+            self.uptodate = MessageDialog(self, "Sorry, but the proxy connection did not work.\n\nHey, it was worth a try.", "No Connection to Internet", OK)
             self.uptodate.ShowModal()
         elif last_updated == 'current':
-            self.uptodate = wx.MessageDialog(self, "Your version of PyHtmlEdit is up to date.\n", "Version is Current", wx.OK)
+            self.uptodate = MessageDialog(self, "Your version of PyHtmlEdit is up to date.\n", "Version is Current", OK)
             self.uptodate.ShowModal()
         else:
-            self.uptodate = wx.MessageDialog(self, "A newer version of PyHtmlEdit was published on %s.\n\nYou can download it from here:\n\n%s" % (last_updated, __repository__), "Newer Version Available", wx.OK)
+            self.uptodate = MessageDialog(self, "A newer version of PyHtmlEdit was published on %s.\n\nYou can download it from here:\n\n%s" % (last_updated, __repository__), "Newer Version Available", OK)
             self.uptodate.ShowModal()
 
 
@@ -657,15 +672,15 @@ class MainWindow(wx.Frame):
         Exit the program
         """
         igot = self.doiexit.ShowModal()
-        if igot == wx.ID_YES:
+        if igot == ID_YES:
             self.Close(True)
 
     def on_open(self,e):
         """
         Open a file.
         """
-        dlg = wx.FileDialog(self, "Choose a file", self.dirname, "", "*.*", wx.OPEN)
-        if dlg.ShowModal() == wx.ID_OK:
+        dlg = FileDialog(self, "Choose a file", self.dirname, "", "*.*", OPEN)
+        if dlg.ShowModal() == ID_OK:
             self.filename=dlg.GetFilename()
             self.dirname=dlg.GetDirectory()
             filehandle=open(os.path.join(self.dirname, self.filename),'r')
@@ -678,9 +693,9 @@ class MainWindow(wx.Frame):
         """
         Save the file.
         """
-        dlg = wx.FileDialog(self, "Choose a file", self.dirname, "", "*.*", \
-                wx.SAVE | wx.OVERWRITE_PROMPT)
-        if dlg.ShowModal() == wx.ID_OK:
+        dlg = FileDialog(self, "Choose a file", self.dirname, "", "*.*", \
+                SAVE | OVERWRITE_PROMPT)
+        if dlg.ShowModal() == ID_OK:
             itcontains = self.control.GetValue()
             self.filename=dlg.GetFilename()
             self.dirname=dlg.GetDirectory()
@@ -761,13 +776,13 @@ class MainWindow(wx.Frame):
         self.control.WriteText(tag_it('h6', self.control.StringSelection))
 
     def on_a(self,e):
-        dialog = wx.TextEntryDialog(self, 'Enter anchor name: ', 'Anchor Name', '')
+        dialog = TextEntryDialog(self, 'Enter anchor name: ', 'Anchor Name', '')
         dialog.ShowModal()
         named = dialog.GetValue()
         self.control.WriteText(tag_it('a', self.control.StringSelection, attributes = {'name': named, }))
 
     def on_href(self,e):
-        dialog = wx.TextEntryDialog(self, 'Enter the HREF:', 'Hyper-Reference', '')
+        dialog = TextEntryDialog(self, 'Enter the HREF:', 'Hyper-Reference', '')
         dialog.ShowModal()
         href = dialog.GetValue()
         self.control.WriteText(tag_it('a', self.control.StringSelection, attributes = {'href': href, }))
@@ -782,7 +797,7 @@ class MainWindow(wx.Frame):
         self.control.WriteText(make_table('Table Caption', 4, 4))
 
     def on_table_convert(self,e):
-        dialog = wx.TextEntryDialog(self, 'Enter a Table Caption:', 'Table Caption', '')
+        dialog = TextEntryDialog(self, 'Enter a Table Caption:', 'Table Caption', '')
         dialog.ShowModal()
         caption = dialog.GetValue()
         tdata = self.control.StringSelection.split('\n')
@@ -831,7 +846,7 @@ class MainWindow(wx.Frame):
         cleantext = clean_it(dirtytext)
         self.control.WriteText(cleantext)
 
-    def on_word_count(self,e):
+    def on_word_count(self, e, status=False):
         # first, try to get the selected text
         selection = self.control.StringSelection
         # if no selected text, use entire document
@@ -857,14 +872,25 @@ class MainWindow(wx.Frame):
         # split selection into a list of words
         wordlist = selection.split(' ')
         # get count of words
-        words = len(wordlist)
-        msg = wx.MessageBox('Chars: %s\nWords: %s\nLines: %s\nNon-Blank Lines: %s' % (chars, words, lines, activelines), 'Word Count')
+        nonblanks = remove_whitespace(selection)
+        if len(nonblanks) == 0:
+            words = 0
+        else:
+            words = len(wordlist)
+        if status == False:
+            msg = MessageBox('Chars: %s\nWords: %s\nLines: %s\nNon-Blank Lines: %s' % (chars, words, lines, activelines), 'Word Count')
+        else:
+            return 'Chars: %s | Words: %s | Lines: %s | Non-Blank Lines: %s' % (chars, words, lines, activelines)
+
+    def update_statusbar(self, e):
+        text = self.on_word_count(e, status=True)
+        self.SetStatusText(text)
 
     def on_strip_html(self,e):
         self.control.WriteText(strip_html(self.control.StringSelection))
 
     def on_toggle_wrap(self,e):
-        msg = wx.MessageBox('Line Wrap toggle not implemented yet', 'Line Wrap')
+        msg = MessageBox('Line Wrap toggle not implemented yet', 'Line Wrap')
 
     def on_switch_mode(self,e):
         pass
@@ -873,14 +899,14 @@ class MainWindow(wx.Frame):
         """
         Asks for a find string and a replace string, and replaces the former with the latter
         """
-        dlg_find = wx.TextEntryDialog(self, 'Text to find', 'Find')
+        dlg_find = TextEntryDialog(self, 'Text to find', 'Find')
         dlg_find.SetValue("")
-        if dlg_find.ShowModal() == wx.ID_OK:
+        if dlg_find.ShowModal() == ID_OK:
             find = dlg_find.GetValue()
             dlg_find.Destroy()
-            dlg_replace = wx.TextEntryDialog(self, 'Text to replace', 'Replace')
+            dlg_replace = TextEntryDialog(self, 'Text to replace', 'Replace')
             dlg_replace.SetValue("")
-            if dlg_replace.ShowModal() == wx.ID_OK:
+            if dlg_replace.ShowModal() == ID_OK:
                 replace = dlg_replace.GetValue()
                 dlg_replace.Destroy()
         if find != '':
@@ -888,7 +914,7 @@ class MainWindow(wx.Frame):
 
 
 # Set up a window based app, and create a main window in it
-app = wx.PySimpleApp()
+app = PySimpleApp()
 view = MainWindow(None, "PyHtmlEdit")
 # Enter event loop
 app.MainLoop()
