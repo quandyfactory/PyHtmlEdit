@@ -17,9 +17,9 @@ Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/li
 
 ## This Version
 
-  * Version: 0.60
+  * Version: 0.61
 
-  * Release Date: 2011-08-15
+  * Release Date: 2011-08-16
 
 ## Requirements
 
@@ -83,6 +83,14 @@ Right now, the spelling_dict is hard-coded, which means I need a version update 
 It would be better to check if the user has a spelling_dict file, load it if available, or else load the default spelling_dict if not available.
 
 ## Revision History
+
+### Version 0.61
+
+* Release Date: 2011-08-16
+ 
+* Changaes:
+
+    * Change hyperlink function so it does not add a target="_blank".
 
 ### Version 0.60
 
