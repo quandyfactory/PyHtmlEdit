@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-__version__ = 0.60
-__releasedate__ = '2011-08-15'
+__version__ = 0.61
+__releasedate__ = '2011-08-16'
 __author__ = 'Ryan McGreal <ryan@quandyfactory.com>'
 __homepage__ = 'http://quandyfactory.com/projects/2/pyhtmledit/'
 __repository__ = 'http://github.com/quandyfactory/PyHtmlEdit'
@@ -321,9 +321,9 @@ def tag_it(tag, text, block = False, attributes = {}):
     """
     atts = ''
     if 'href' in attributes:
-        #print 'href starts with ' + attributes['href'][0:4].lower()
-        if attributes['href'][0:4].lower() == 'http':
-            attributes['target'] = '_blank'
+        #if attributes['href'][0:4].lower() == 'http':
+        #    attributes['target'] = '_blank'
+        pass # don't give it a target="_blank" attribute
     if attributes != {}: atts = make_attlist(attributes)
     if block == False:
         return '<%s%s>%s</%s>' % (tag, atts, text.rstrip(), tag)
