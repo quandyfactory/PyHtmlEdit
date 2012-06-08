@@ -17,9 +17,9 @@ Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/li
 
 ## This Version
 
-  * Version: 0.61
+  * Version: 0.62
 
-  * Release Date: 2011-08-16
+  * Release Date: 2012-06-08
 
 ## Requirements
 
@@ -84,11 +84,20 @@ It would be better to check if the user has a spelling_dict file, load it if ava
 
 ## Revision History
 
+### Version 0.62
+
+* Release Date: 2012-06-08
+ 
+* Changes:
+
+    * Fixed the extra spaces inside `blockquote` elements on `markdown_it()`
+    * Added `class="initial"` to the first `<p>` after an `</h3>`
+
 ### Version 0.61
 
 * Release Date: 2011-08-16
  
-* Changaes:
+* Changes:
 
     * Change hyperlink function so it does not add a target="_blank".
 
