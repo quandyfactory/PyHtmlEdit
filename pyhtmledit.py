@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-__version__ = 0.61
-__releasedate__ = '2011-08-16'
+__version__ = 0.62
+__releasedate__ = '2012-06-08'
 __author__ = 'Ryan McGreal <ryan@quandyfactory.com>'
 __homepage__ = 'http://quandyfactory.com/projects/2/pyhtmledit/'
 __repository__ = 'http://github.com/quandyfactory/PyHtmlEdit'
@@ -269,9 +269,21 @@ def markdown_it(text):
         markeddown = markeddown.replace('\n</p>', '</p>\n') # fix bug in Windows
         block_tags = '</p> </ul> </ol> </blockquote> </h1> </h2> </h3> </h4> </h5> </h6> </div>'.split(' ')
         for tag in block_tags:
-            markeddown = markeddown.replace(tag, '%s%s' % (tag, '\n'))
+            # put block tags on new lines
+            markeddown = markeddown.replace(tag, '%s\n' % (tag))
+            # get rid of blank line above closing tag
+            markeddown = markeddown.replace('\n\n%s' % (tag), '\n%s' % (tag))
 
-        markeddown = markeddown.replace('\n\n\n', '\n\n') # get rid of triple spaces between paragraphs on Windows
+        # get rid of triple spaces between paragraphs on Windows
+        while '\n\n\n' in markeddown:
+            markeddown = markeddown.replace('\n\n\n', '\n\n') 
+        
+        # fix stupid extra space thing inside block quotes
+        markeddown = markeddown.replace('\n\n  \n  ', '\n\n  ')
+
+        # finally, add the "initial" class to the first paragraph after an h3
+        markeddown = markeddown.replace('</h3>\n\n<p>', '</h3>\n\n<p class="initial">')
+        
         return markeddown
     else:
         return text
