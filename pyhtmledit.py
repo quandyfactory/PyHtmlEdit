@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-__version__ = 0.62
-__releasedate__ = '2012-06-08'
+__version__ = 0.63
+__releasedate__ = '2013-01-16'
 __author__ = 'Ryan McGreal <ryan@quandyfactory.com>'
 __homepage__ = 'http://quandyfactory.com/projects/2/pyhtmledit/'
 __repository__ = 'http://github.com/quandyfactory/PyHtmlEdit'
@@ -439,6 +439,7 @@ ID_SQL = 43
 ID_REPLACE = 44
 ID_UPDATED = 45
 ID_MISSPELLINGS = 46
+ID_CENTERED = 47
 #ID_STATUSBAR = 47
 
 # The basic code for this came from a free example I found somewhere online.
@@ -498,6 +499,7 @@ class MainWindow(Frame):
 
         block_menu = Menu()
         block_menu.Append(ID_BLOCKQUOTE, "&blockquote", "Block quotation")
+        block_menu.Append(ID_CENTERED, "&centered", "Centered Div")
         block_menu.Append(ID_DIV, "&div", "Generic block element")
         block_menu.Append(ID_P, "&p", "Paragraph")
         block_menu.Append(ID_PINITIAL, "p.&initial", "First paragraph in an article or section")
@@ -581,6 +583,7 @@ class MainWindow(Frame):
         EVT_MENU(self, ID_SUP, self.on_sup)
         EVT_MENU(self, ID_CODE, self.on_code)
         EVT_MENU(self, ID_DIV, self.on_div)
+        EVT_MENU(self, ID_CENTERED, self.on_centered)
         EVT_MENU(self, ID_P, self.on_p)
         EVT_MENU(self, ID_PPHOTO, self.on_photo)
         EVT_MENU(self, ID_PINITIAL, self.on_p_initial)
@@ -765,6 +768,9 @@ class MainWindow(Frame):
 
     def on_div(self,e):
         self.control.WriteText(tag_it('div', self.control.StringSelection, block = True))
+
+    def on_centered(self, e):
+        self.control.WriteText(tag_it('div', self.control.StringSelection, block=True, attributes={'class': 'centered'}))
 
     def on_pre(self,e):
         self.control.WriteText(tag_it('pre', self.control.StringSelection, block = True))
