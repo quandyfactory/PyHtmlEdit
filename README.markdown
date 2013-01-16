@@ -17,9 +17,9 @@ Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/li
 
 ## This Version
 
-  * Version: 0.62
+  * Version: 0.63
 
-  * Release Date: 2012-06-08
+  * Release Date: 2012-01-16
 
 ## Requirements
 
@@ -83,6 +83,14 @@ Right now, the spelling_dict is hard-coded, which means I need a version update 
 It would be better to check if the user has a spelling_dict file, load it if available, or else load the default spelling_dict if not available.
 
 ## Revision History
+
+### Version 0.63
+
+* Release Date: 2013-01-16
+ 
+* Changes:
+
+    * Added div.centered to HTML > Block menu
 
 ### Version 0.62
 
