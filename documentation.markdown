@@ -116,7 +116,7 @@ Inserts the following block HTML elements:
 * ul - highlight a linebreak-separated list of items
 * ol - highlight a linebreak-separated list of items
 * table (convert) - sets rows based on line breaks, cols based on tabs
-* table (new) - generates a simple 4x4 table with a caption
+* table (new) - prompts for caption, # of rows and # of columns and generates empty HTML for the table.
 
 ###  Format Menu
 
