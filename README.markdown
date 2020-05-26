@@ -17,72 +17,54 @@ Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/li
 
 ## This Version
 
-  * Version: 0.63
+  * Version: 3.0
 
-  * Release Date: 2012-01-16
+  * Release Date: 2020-05-25
 
 ## Requirements
 
-  * Python 2.5 or newer (not Python 3) [http://www.python.org/](http://www.python.org/)
-  * wxPython 2.8 [http://www.wxpython.org/](http://www.wxpython.org/)
-  * python-markdown [http://www.freewisdom.org/projects/python-markdown/](http://www.freewisdom.org/projects/python-markdown/) or python-markdown2 [http://code.google.com/p/python-markdown2/](http://code.google.com/p/python-markdown2/)
-  * pyyaml [http://pyyaml.org/](http://pyyaml.org/)
-
+  * Python 3
+  * python-markdown2 [https://pypi.org/project/markdown2/](http://code.google.com/p/python-markdown2/)
+  * HTML2text [https://pypi.org/project/html2text/][5]
+  
 ## Notes
 
-### wxPython version
+### Python 3
 
-This program requires wxPython 2.8, and specifically makes use of the TextCtrl StringSelection property, which doesn't exist in wxPython 2.6.
+The biggest change is that previous versions of this program used Python 2.x, which is now obsolete and has met its end-of-life. The current version uses Python3.
 
-My home system (Ubuntu 9.04 Jaunty) comes with wxPython 2.6 pre-installed, and apparently some basic system code depends on this older version, so I had to install 2.8 separately:
+### Tkinter
 
-[http://wiki.wxpython.org/InstallingOnUbuntuOrDebian][8]
+Previous versions of this program used wxPython as the GUI library, which turned out to be quite a hassle. Now it uses Tkinter, which ships with Python by default and should be available to all users.
 
-Unfortunately, when importing wx, Python grabs the older version by default, not the newer one. The solution is to import wxversion first, and select version 2.8, as per this example:
+### Markdown2
 
-[http://www.wxpython.org/docs/api/wxversion-module.html][9]
+This software does not come bundled with a markdown parser. It assumes you have python-markdown2 installed.
 
-Fixed from version 0.1.
+[https://pypi.org/project/markdown2/][6]
 
-### Markdown
-
-This software does not come bundled with a markdown parser. It checks your system to see if you already have python-markdown installed.
-
-[http://www.freewisdom.org/projects/python-markdown/][6]
-
-If not, it checks to see if you have python-markdown2 installed.
-
-[http://code.google.com/p/python-markdown2/][7]
-
-Note: both modules are available through easy_install.
-
-If you have one of these modules installed, it provides the ability to convert markdown syntax to HTML in the Tools menu. If you don't have either module installed, it simply doesn't offer that function.
-
-Added in version 0.3.
-
-Some time in the future, I might add support for PottyMouth as well.
-
-### Missing Functionality
-
-#### HTML Preview
-
-A handy feature would be an HTML Preview so you can see what your code will look like.
-
-#### Toggle Line Wrap
-
-I'd like to be able to toggle between line wrapping and horizontal scrolling, but apparently you can't change the style wx.TE_MULTILINE on a TextCtrl after creating it. Instead, you would have to subclass the control and flip between two controls, one of which is set to wrap and the other set to scroll.
-
-[http://aspn.activestate.com/ASPN/Mail/Message/wxpython-users/3698130][10]
-
-So this is also on my list of things to do.
-
-#### Add Words to spelling_dict {}
-
-Right now, the spelling_dict is hard-coded, which means I need a version update just to add words and limits the ability of users to add their own words.
-
-It would be better to check if the user has a spelling_dict file, load it if available, or else load the default spelling_dict if not available.
+So you should install it.
 
 ## Revision History
+
+### Version 3.0
+
+* Release Date: 2020-05-25
+
+* Changes:
+
+    * Switched from Python 2.x to Python 3.x.
+    * Swapped the GUI library from wxPython to Tkinter.
+    * Added File -> Open-Insert, which opens a new file and adds it to the current document at the top.
+    * Added File -> Open-Append, which opens a new file and adds it to the current document at the bottom.
+    * Added Edit -> Find, which finds and highlights the next occurrence of the search term.
+    * Added Edit -> Replace Next, which finds and replaces the next occurrence of the search term.
+    * Added Edit -> Replace All, which finds and replaces every occurrence of the search term.
+    * Fixed a long-standing bug in the table creation function, which misplaced the </tr> tag before the </thead> tag.
+    * Added ability to specify caption, number of rows and number of columns for a new table.
+    * Removed some Format menu options that I literally never use.
+    * Dropped support for python-markdown, which is not as good as python-markdown2.
+    * Added Ctrl keyboard shortcuts for some common actions (e.g. Ctrl-r for replace all). (Alt keyboard shortcuts still work.)
 
 ### Version 0.63
 
@@ -273,11 +255,11 @@ It would be better to check if the user has a spelling_dict file, load it if ava
 
    [4]: http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
-   [5]: http://www.aaronsw.com/2002/html2text/
+   [5]: https://pypi.org/project/html2text/
 
-   [6]: http://www.freewisdom.org/projects/python-markdown/'
+   [6]: https://pypi.org/project/markdown2/
 
-   [7]: http://code.google.com/p/python-markdown2/
+   [7]: https://pypi.org/project/markdown2/
 
    [8]: http://wiki.wxpython.org/InstallingOnUbuntuOrDebian
 
