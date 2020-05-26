@@ -1,17 +1,17 @@
-#PyHtmlEdit Documentation
+# PyHtmlEdit Documentation
 
-##Summary
+## Summary
 
 PyHtmlEdit is a simple Python text editor optimized for the kinds of HTML formatting that I commonly do.
 
-##About this Document
+## About this Document
 
 * Author: Ryan McGreal
 * Email: ryan@quandyfactory.com
 * Homepage: http://quandyfactory.com/projects/2/pyhtmledit
 * Repository: http://github.com/quandyfactory/PyHtmlEdit
 
-##Licence
+## Licence
 
 This document is licenced under the GNU Free Documentation Licence, v. 1.3 http://www.gnu.org/copyleft/fdl.html
 
