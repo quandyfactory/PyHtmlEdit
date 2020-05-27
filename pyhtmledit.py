@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-__version__ = 3.00
-__releasedate__ = '2020-05-25'
+__version__ = 3.1
+__releasedate__ = '2020-05-27'
 __author__ = 'Ryan McGreal <ryan@quandyfactory.com>'
 __homepage__ = 'http://quandyfactory.com/projects/2/pyhtmledit/'
 __repository__ = 'http://github.com/quandyfactory/PyHtmlEdit'
@@ -152,6 +152,9 @@ def clean_it(text):
     text = remove_multiple_spaces(text)
     for k, v in CleanChars.items():
         text = text.replace(k, v)
+    text = text.replace('\n', '\n\n')
+    while '\n\n\n' in text:
+        text = text.replace('\n\n\n', '\n\n')
     return text
 
 
@@ -357,6 +360,13 @@ def edit_cut():
 
 def edit_paste():
     pass
+
+
+def edit_undo():
+    content.edit_undo()
+
+def edit_redo():
+    content.edit_redo()
 
 
 def edit_find(event=None):
@@ -583,6 +593,20 @@ def html_heading_h6():
     tag_selection('h6')
 
 
+def html_link_hyperlink():
+    url = simpledialog.askstring('Hyperlink', 'Enter the hyperlink URL: ')
+    selected = get_selection()
+    newtext = '<a href="%s">%s</a>' % (url, selected)
+    replace_selection(newtext)
+
+
+def html_link_anchor():
+    anchor = simpledialog.askstring('Anchor', 'Enter the anchor name: ')
+    selected = get_selection()
+    newtext = '<a name="%s" id="%s">%s</a>' % (anchor, anchor, selected)
+    replace_selection(newtext)
+
+
 def html_nested_ul():
     list_selection('ul', {})
 
@@ -668,7 +692,7 @@ def about_about():
 
 window = tk.Tk()
 window.minsize(800,600)
-window.title('PyHTMLEdit')
+window.title('PyHTMLEdit %s' % (__version__))
 
 window_icon = tk.PhotoImage(file=iconpath)
 window.tk.call('wm', 'iconphoto', window._w, window_icon)
@@ -681,7 +705,6 @@ file_menu.add_command(label='Open (Insert)', command=file_open_insert, underline
 file_menu.add_command(label='Open (Append)', command=file_open_append, underline=6)
 file_menu.add_command(label='Save', command=file_save, underline=0, accelerator='Ctrl+s')
 file_menu.add_command(label='Quit', command=file_quit, underline=0, accelerator='Ctrl+q')
-
 menubar.add_cascade(label='File', menu=file_menu, underline=0)
 
 edit_menu = tk.Menu(window, tearoff=0)
@@ -692,7 +715,8 @@ edit_menu.add_command(label='Paste', command=edit_paste, underline=0, accelerato
 edit_menu.add_command(label='Find Next', command=edit_find, underline=0, accelerator='Ctrl+f')
 edit_menu.add_command(label='Replace All', command=edit_replace_all, underline=0, accelerator='Ctrl+r')
 edit_menu.add_command(label='Replace Next', command=edit_replace_next, underline=8, accelerator='Ctrl+n')
-
+edit_menu.add_command(label='Undo', command=edit_undo, underline=0, accelerator='Ctrl-z')
+edit_menu.add_command(label='Redo', command=edit_redo, underline=1, accelerator='Ctrl-y')
 menubar.add_cascade(label='Edit', menu=edit_menu, underline=0)
 
 html_menu = tk.Menu(menubar, tearoff=0)
@@ -724,6 +748,9 @@ html_heading_menu.add_command(label='H4', command=html_heading_h4, underline=1)
 html_heading_menu.add_command(label='H5', command=html_heading_h5, underline=1)
 html_heading_menu.add_command(label='H6', command=html_heading_h6, underline=1)
 
+html_link_menu.add_command(label='hyperlink', command=html_link_hyperlink, underline=0)
+html_link_menu.add_command(label='anchor', command=html_link_anchor, underline=0)
+
 html_nested_menu.add_command(label='UL', command=html_nested_ul, underline=0)
 html_nested_menu.add_command(label='OL', command=html_nested_ol, underline=0)
 html_nested_menu.add_command(label='Table (Convert)', command=html_nested_table_convert, underline=7)
@@ -732,8 +759,8 @@ html_nested_menu.add_command(label='Table (New)', command=html_nested_table_new,
 html_menu.add_cascade(label='Inline', menu=html_inline_menu, underline=0)
 html_menu.add_cascade(label='Block', menu=html_block_menu, underline=0)
 html_menu.add_cascade(label='Heading', menu=html_heading_menu, underline=0)
+html_menu.add_cascade(label='Link', menu=html_link_menu, underline=0)
 html_menu.add_cascade(label='Nested', menu=html_nested_menu, underline=0)
-
 menubar.add_cascade(label='HTML', menu=html_menu, underline=0)
 
 format_menu = tk.Menu(menubar, tearoff=0)
@@ -741,31 +768,25 @@ format_menu.add_command(label='Clean', command=format_clean, underline=0)
 format_menu.add_command(label='Lowercase', command=format_lowercase, underline=0)
 format_menu.add_command(label='Uppercase', command=format_uppercase, underline=0)
 format_menu.add_command(label='Capitalize', command=format_capitalize, underline=1)
-
 menubar.add_cascade(label='Format', menu=format_menu, underline=1)
 
 tools_menu = tk.Menu(menubar, tearoff=0)
-
 tools_menu.add_command(label='Strip HTML', command=tools_strip_html, underline=0)
 tools_menu.add_command(label='HTML to Text', command=tools_html_to_text, underline=0)
 tools_menu.add_command(label='Markdown', command=tools_markdown, underline=0)
-
 menubar.add_cascade(label='Tools', menu=tools_menu, underline=0)
 
 about_menu = tk.Menu(menubar, tearoff=0)
-
-about_menu.add_command(label='About', command=about_about, underline=0)
-
+about_menu.add_command(label='About PyHtmlEdit', command=about_about, underline=0)
 menubar.add_cascade(label='About', menu=about_menu, underline=0)
 
 
 scroll = tk.Scrollbar(window)
 scroll.pack(side=tk.RIGHT, fill=tk.Y)
 
-content = tk.Text(window, wrap=tk.WORD, yscrollcommand=scroll.set)
+content = tk.Text(window, wrap=tk.WORD, yscrollcommand=scroll.set, undo=True, maxundo=-1)
 content.pack(fill="both", expand=True)
 content.focus()
-
 
 
 window.config(menu=menubar)
@@ -777,6 +798,8 @@ window.bind_all('<Control-s>', file_save)
 window.bind_all('<Control-f>', edit_find)
 window.bind_all('<Control-r>', edit_replace_all)
 window.bind_all('<Control-n>', edit_replace_next)
+window.bind_all('<Control-z>', edit_undo)
+window.bind_all('<Control-y>', edit_redo)
 
 args = sys.argv
 if len(args) > 1:
