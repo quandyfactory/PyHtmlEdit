@@ -17,9 +17,9 @@ Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/li
 
 ## This Version
 
-  * Version: 3.0
+  * Version: 3.1
 
-  * Release Date: 2020-05-25
+  * Release Date: 2020-05-27
 
 ## Requirements
 
@@ -46,6 +46,16 @@ This software does not come bundled with a markdown parser. It assumes you have 
 So you should install it.
 
 ## Revision History
+
+### Version 3.1
+
+* Release Date: 2020-05-27
+
+* Changes:
+
+    * Added support for Undo (Ctrl-z) and Redo (Ctrl-y).
+    * Added a Link section under the HTML menu for anchor and hyperlink tags.
+    * Include the version in the window title.
 
 ### Version 3.0
 
