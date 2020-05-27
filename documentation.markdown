@@ -17,8 +17,8 @@ This document is licenced under the GNU Free Documentation Licence, v. 1.3 http:
 
 ## This Version
 
-* Version 3.0
-* Release Date: 2020-05-25
+* Version 3.1
+* Release Date: 2020-05-27
 
 ## Menu Functions
 
@@ -74,6 +74,13 @@ Launches a dialog to enter search text and a dialog to enter replacement text, a
 
 Launches a dialog to enter search text and a dialog to enter replacement text, and then replaces the next occurrence of the former after the cursor position with the latter. At the end of the document, it continues to search and replace from the beginning.
 
+### Undo (Ctrl-z)
+
+Undoes the most recent action.
+
+### Redo (Ctrl-y)
+
+Redoes the most recent action.
 
 ### HTML Menu
 
@@ -110,6 +117,11 @@ Inserts the following block HTML elements:
 * h4
 * h5
 * h6
+
+### Link
+
+* hyperlink - adds a hyperlink to highlighted text
+* anchor - adds an anchor to highlighted text
 
 #### Nested
 
@@ -155,4 +167,3 @@ Converts Markdown to HTML. Note: [python-markdown2](https://pypi.org/project/mar
 #### About PyHTmlEdit
 
 Pops up a dialog with a summary of PyHtmlEdit, version and release date, author name and email, web address, and licence.
-
