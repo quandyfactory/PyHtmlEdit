@@ -17,9 +17,9 @@ Released under the GNU General Public Licence, Version 2: [http://www.gnu.org/li
 
 ## This Version
 
-  * Version: 3.1
+  * Version: 3.2
 
-  * Release Date: 2020-05-27
+  * Release Date: 2023-08-31
 
 ## Requirements
 
@@ -46,6 +46,13 @@ This software does not come bundled with a markdown parser. It assumes you have 
 So you should install it.
 
 ## Revision History
+
+## Version 3.2 
+* Release Date: 2023-08-31
+
+* Changes:
+    * Added Power BI to SQL Server and SQL Server to Power BI conversion to Format menu
+    * Added Bookmarklet to JS and JS to Bookmarklet conversion to Format menu
 
 ### Version 3.1
 
