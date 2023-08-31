@@ -17,8 +17,8 @@ This document is licenced under the GNU Free Documentation Licence, v. 1.3 http:
 
 ## This Version
 
-* Version 3.1
-* Release Date: 2020-05-27
+* Version 3.2
+* Release Date: 2023-08-31
 
 ## Menu Functions
 
@@ -147,6 +147,22 @@ Converts selected text to UPPERCASE.
 #### Capitalize
 
 Converts selected text to Proper Case (first word capitalized).
+
+#### PowerBI to SQLServer 
+
+Converts SQL query in Power BI Advanced Editor format to SQL Server format.
+
+#### SQLServer to PowerBI 
+
+Converts SQL query in SQL Server format to Power BI Advanced Editor format.
+
+#### JS to Bookmarklet 
+
+Converts a JS function to Bookmarklet format (single line).
+
+#### Bookmarklet to JS 
+
+Converts a JS bookmarklet to JS format (multi-line).
 
 ### Tools Menu
 
