@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-__version__ = 3.1
-__releasedate__ = '2020-05-27'
+__version__ = 3.2
+__releasedate__ = '2023-08-31'
 __author__ = 'Ryan McGreal <ryan@quandyfactory.com>'
 __homepage__ = 'http://quandyfactory.com/projects/2/pyhtmledit/'
 __repository__ = 'http://github.com/quandyfactory/PyHtmlEdit'
@@ -281,7 +281,14 @@ def markdown_it(text):
     # fix stupid extra space thing inside block quotes
     markeddown = markeddown.replace('\n\n  \n  ', '\n\n  ')
 
-    # finally, add the "initial" class to the first paragraph after an h3
+    #trim whitespace around the string
+    markeddown = markeddown.strip()
+
+    # add the "initial" class to teh first paragraph
+    if markeddown[:3] == '<p>':
+        markeddown = '<p class="initial">%s' % (markeddown[3:])
+
+    # add the "initial" class to the first paragraph after an h3
     markeddown = markeddown.replace('</h3>\n\n<p>', '</h3>\n\n<p class="initial">')
 
     return markeddown
@@ -686,12 +693,39 @@ def tools_markdown():
     replace_selection(newtext)
 
 
+def format_powerbi_to_sqlserver():
+    selected = get_selection()
+    newtext = selected.replace('#(lf)', '\n').replace('#(tab)', '\t')
+    replace_selection(newtext)
+
+def format_sqlserver_to_powerbi():
+    selected = get_selection()
+    newtext = selected.replace('\n', '#(lf)').replace('\t', '#(tab)')
+    replace_selection(newtext)
+
+def format_js_to_bookmarklet():
+    selected = get_selection()
+    newtext = selected.replace('\n', ' ')
+    replace_selection(newtext) 
+   
+def format_bookmarklet_to_js():
+    selected = get_selection()
+    newtext = selected 
+    while '  ' in newtext:
+        newtext = newtext.replace('  ', ' ')
+    newtext = newtext.replace('%27', "'")
+    newtext = newtext.replace('{ ', '{')
+    newtext = newtext.replace('{', '{\n')
+    newtext = newtext.replace('; ', ';') 
+    newtext = newtext.replace(';', ';\n') 
+    replace_selection(newtext) 
+
 def about_about():
     info = messagebox.showinfo('About PyHtmlEdit', 'PyHtmlEdit is a simple HTML editor written in Python3 using the tkinter GUI library.\n\nCreated by %s\n\nVersion: %s, released on %s\n\nCopyright: %s\n\nHomepage: %s' % (__author__, __version__, __releasedate__, __copyright__, __homepage__))
 
 
 window = tk.Tk()
-window.minsize(800,600)
+window.minsize(300,200)
 window.title('PyHTMLEdit %s' % (__version__))
 
 window_icon = tk.PhotoImage(file=iconpath)
@@ -768,6 +802,10 @@ format_menu.add_command(label='Clean', command=format_clean, underline=0)
 format_menu.add_command(label='Lowercase', command=format_lowercase, underline=0)
 format_menu.add_command(label='Uppercase', command=format_uppercase, underline=0)
 format_menu.add_command(label='Capitalize', command=format_capitalize, underline=1)
+format_menu.add_command(label='PowerBI to SQLServer', command=format_powerbi_to_sqlserver, underline=0)
+format_menu.add_command(label='SQLServer to PowerBI', command=format_sqlserver_to_powerbi, underline=0)
+format_menu.add_command(label='JS to Bookmarklet', command=format_js_to_bookmarklet, underline=0)
+format_menu.add_command(label='Bookmarklet to JS', command=format_bookmarklet_to_js, underline=0)
 menubar.add_cascade(label='Format', menu=format_menu, underline=1)
 
 tools_menu = tk.Menu(menubar, tearoff=0)
